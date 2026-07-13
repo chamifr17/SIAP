@@ -45,7 +45,7 @@ class MovementCreate(BaseModel):
     body_number: str
     rank: str
     name: str
-    peringkat: str
+    peringkat: str | None = None
     phone: str
     vehicle: str
     destination: str = Field(min_length=2)
@@ -85,7 +85,7 @@ class SickReportCreate(BaseModel):
     body_number: str
     rank: str
     name: str
-    peringkat: str
+    peringkat: str | None = None
     phone: str
     symptoms: str
     description: str = Field(min_length=5)
