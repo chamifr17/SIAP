@@ -1,4 +1,4 @@
-import { Car, CheckCircle2, HeartPulse, Phone, RefreshCw } from 'lucide-react';
+import { Car, CheckCircle2, HeartPulse, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api';
@@ -55,10 +55,10 @@ export function OutsideCadetsPage() {
                 <p><span className="font-semibold">Symptoms:</span> {item.symptoms}</p>
                 <p><span className="font-semibold">Description:</span> {item.description}</p>
                 <p><span className="font-semibold">Location:</span> {item.locationType}{item.room ? `, ${item.building}-${item.room}` : ''}</p>
+                <p><span className="font-semibold">Phone:</span> {item.phone ?? '-'}</p>
                 <p><span className="font-semibold">Check in:</span> {item.checkInTime ? new Date(item.checkInTime).toLocaleString() : '-'}</p>
                 <p><span className="font-semibold">DO:</span> {item.dutyOfficerName ?? '-'}</p>
               </div>
-              {item.phone && <a className="btn-secondary w-full justify-start" href={`tel:${item.phone}`}><Phone size={18} /> {item.phone}</a>}
               <button className="btn-primary w-full" disabled={recover.isPending} onClick={() => recover.mutate(item.id)}>
                 <CheckCircle2 size={18} /> Verify Recovered
               </button>
@@ -84,11 +84,11 @@ export function OutsideCadetsPage() {
                 <p><span className="font-semibold">Destination:</span> {item.destination}</p>
                 <p><span className="font-semibold">Purpose:</span> {item.purpose}</p>
                 <p><span className="font-semibold">Kenderaan:</span> {item.vehicle ?? '-'}</p>
+                <p><span className="font-semibold">Phone:</span> {item.phone ?? '-'}</p>
                 <p><span className="font-semibold">Expected return:</span> {item.expectedReturn ? new Date(item.expectedReturn).toLocaleString() : '-'}</p>
                 <p><span className="font-semibold">Check in:</span> {item.checkoutTime ? new Date(item.checkoutTime).toLocaleString() : '-'}</p>
                 <p><span className="font-semibold">DO:</span> {item.dutyOfficerName ?? '-'}</p>
               </div>
-              {item.phone && <a className="btn-secondary w-full justify-start" href={`tel:${item.phone}`}><Phone size={18} /> {item.phone}</a>}
               <button className="btn-primary w-full" disabled={returnMovement.isPending} onClick={() => returnMovement.mutate(item.id)}>
                 <CheckCircle2 size={18} /> Verify Returned
               </button>
