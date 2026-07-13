@@ -65,15 +65,25 @@ export function AppLayout({ role }: Props) {
           ))}
         </nav>
         {session && !session.officerName && (
-          <div className="fixed inset-0 z-50 grid place-items-end bg-black/50 p-4">
-            <section className="w-full max-w-md rounded-lg bg-white p-4 shadow-soft dark:bg-slate-900">
-              <h2 className="text-xl font-bold">Select Duty Officer</h2>
-              <p className="mt-1 text-sm text-slate-500">Choose the DO taking this 22:00 to 22:00 duty.</p>
-              <select className="field mt-4" value={selectedOfficer} onChange={(event) => setSelectedOfficer(event.target.value)}>
-                <option value="">Select DO</option>
-                {dutyOfficers.map((officer) => <option key={officer}>{officer}</option>)}
-              </select>
-              <button className="btn-primary mt-4 w-full" disabled={!selectedOfficer} onClick={saveOfficer}>Continue</button>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-5 backdrop-blur-sm">
+            <section className="w-full max-w-[420px] rounded-xl border border-white/70 bg-white p-5 shadow-[0_24px_70px_rgba(15,23,42,0.28)] dark:border-slate-800 dark:bg-slate-900">
+              <div className="space-y-1 text-center">
+                <p className="text-xs font-bold uppercase tracking-wide text-olive-700 dark:text-olive-100">22:00 Duty Session</p>
+                <h2 className="text-2xl font-bold">Select Duty Officer</h2>
+                <p className="text-sm text-slate-500">Choose the DO taking this duty.</p>
+              </div>
+              <label className="mt-5 block space-y-2">
+                <span className="label">Duty Officer</span>
+                <select
+                  className="field min-h-14 appearance-none bg-[linear-gradient(45deg,transparent_50%,#4a5b35_50%),linear-gradient(135deg,#4a5b35_50%,transparent_50%)] bg-[length:6px_6px,6px_6px] bg-[position:calc(100%-20px)_50%,calc(100%-14px)_50%] bg-no-repeat pr-10 font-semibold"
+                  value={selectedOfficer}
+                  onChange={(event) => setSelectedOfficer(event.target.value)}
+                >
+                  <option value="">Select DO</option>
+                  {dutyOfficers.map((officer) => <option key={officer}>{officer}</option>)}
+                </select>
+              </label>
+              <button className="btn-primary mt-5 w-full" disabled={!selectedOfficer} onClick={saveOfficer}>Continue</button>
             </section>
           </div>
         )}
