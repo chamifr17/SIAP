@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { z } from 'zod';
 import { api } from '../../lib/api';
 import { isQRTokenValid, readQRToken, secondsRemaining } from '../../lib/qrToken';
+import { DutyOfficerNotice } from './DutyOfficerNotice';
 
 const schema = z.object({
   bodyNumber: z.string().min(2, 'No. badan is required'),
@@ -47,6 +48,12 @@ export function OutsideCheckInForm() {
   return (
     <form className="space-y-4" onSubmit={handleSubmit((data) => submitMovement.mutate({ ...data, ...dutyPayload, qrToken: qrState?.token }))}>
       <section className="card space-y-2"><h2 className="text-xl font-bold">Go Outside Form</h2><p className="text-sm text-slate-500">Fill in your personal and movement details before leaving.</p><p className="text-xs font-semibold text-olive-700 dark:text-olive-100">QR valid for {secondsRemaining(qrState!.expiresAt)} seconds</p></section>
+      <DutyOfficerNotice
+        name={dutyPayload.dutyOfficerName}
+        id={dutyPayload.dutyOfficerId}
+        startedAt={dutyPayload.dutyStartedAt}
+        endedAt={dutyPayload.dutyEndedAt}
+      />
       <label className="block space-y-2"><span className="label">No. Badan</span><input className="field" {...register('bodyNumber')} />{errors.bodyNumber && <p className="text-sm text-red-600">{errors.bodyNumber.message}</p>}</label>
       <div className="grid grid-cols-2 gap-3">
         <label className="block space-y-2"><span className="label">Pangkat</span><input className="field" {...register('rank')} />{errors.rank && <p className="text-sm text-red-600">{errors.rank.message}</p>}</label>

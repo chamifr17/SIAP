@@ -1,6 +1,7 @@
 import { HeartPulse, LogOut } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { isQRTokenValid, readQRToken, secondsRemaining, tokenSearch } from '../../lib/qrToken';
+import { DutyOfficerNotice, dutyDetailsFromSearch } from './DutyOfficerNotice';
 
 export function QRChoicePage() {
   const location = useLocation();
@@ -15,7 +16,14 @@ export function QRChoicePage() {
     );
   }
 
-  const search = tokenSearch(qrState!);
+  const originalParams = new URLSearchParams(location.search);
+  const tokenParams = tokenSearch(qrState!).replace('?', '');
+  const dutyParams = ['duty_officer_name', 'duty_officer_id', 'duty_started_at', 'duty_ended_at']
+    .map((key) => originalParams.has(key) ? `${key}=${encodeURIComponent(originalParams.get(key) ?? '')}` : '')
+    .filter(Boolean)
+    .join('&');
+  const search = `?${[tokenParams, dutyParams].filter(Boolean).join('&')}`;
+  const dutyDetails = dutyDetailsFromSearch(location.search);
 
   return (
     <div className="space-y-4">
@@ -24,6 +32,7 @@ export function QRChoicePage() {
         <p className="text-sm text-slate-500">Select one form to check in with the Duty Officer.</p>
         <p className="text-xs font-semibold text-olive-700 dark:text-olive-100">QR valid for {secondsRemaining(qrState!.expiresAt)} seconds</p>
       </section>
+      <DutyOfficerNotice {...dutyDetails} />
       <Link to={`/qr/sick/check-in${search}`} className="btn-danger min-h-24 w-full justify-start text-base">
         <HeartPulse size={24} />
         <span>Report Sick</span>
