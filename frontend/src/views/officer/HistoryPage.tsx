@@ -1,5 +1,5 @@
 import { Archive, Car, CheckCircle2, HeartPulse, X } from 'lucide-react';
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api';
 import { getDutySession } from '../../lib/dutySession';
@@ -7,6 +7,62 @@ import { EmptyState } from '../../ui/EmptyState';
 
 type Tab = 'sick' | 'movement';
 type ArchiveTarget = { type: Tab; id: string; label: string } | null;
+const SWIPE_ACTION_WIDTH = 96;
+
+type SwipeHistoryCardProps = {
+  children: ReactNode;
+  onArchive: () => void;
+};
+
+function SwipeHistoryCard({ children, onArchive }: SwipeHistoryCardProps) {
+  const [startX, setStartX] = useState<number | null>(null);
+  const [offset, setOffset] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const beginSwipe = (clientX: number) => {
+    setStartX(clientX);
+  };
+
+  const moveSwipe = (clientX: number) => {
+    if (startX === null) return;
+    const nextOffset = Math.min(0, Math.max(-SWIPE_ACTION_WIDTH, clientX - startX + (isOpen ? -SWIPE_ACTION_WIDTH : 0)));
+    setOffset(nextOffset);
+  };
+
+  const endSwipe = () => {
+    if (startX === null) return;
+    const shouldOpen = offset < -SWIPE_ACTION_WIDTH / 2;
+    setIsOpen(shouldOpen);
+    setOffset(shouldOpen ? -SWIPE_ACTION_WIDTH : 0);
+    setStartX(null);
+  };
+
+  return (
+    <div className="relative overflow-hidden rounded-lg">
+      <button
+        className="absolute inset-y-0 right-0 flex w-24 flex-col items-center justify-center gap-1 bg-red-600 text-xs font-bold text-white"
+        onClick={onArchive}
+        type="button"
+      >
+        <Archive size={20} />
+        Delete
+      </button>
+      <article
+        className="card relative space-y-2 touch-pan-y transition-transform"
+        onMouseDown={(event) => beginSwipe(event.clientX)}
+        onMouseMove={(event) => moveSwipe(event.clientX)}
+        onMouseLeave={endSwipe}
+        onMouseUp={endSwipe}
+        onTouchStart={(event) => beginSwipe(event.touches[0].clientX)}
+        onTouchMove={(event) => moveSwipe(event.touches[0].clientX)}
+        onTouchEnd={endSwipe}
+        style={{ transform: `translateX(${offset}px)` }}
+      >
+        {children}
+      </article>
+    </div>
+  );
+}
 
 export function HistoryPage() {
   const [tab, setTab] = useState<Tab>('sick');
@@ -92,7 +148,10 @@ export function HistoryPage() {
         <section className="space-y-3">
           {recovered.length === 0 && <EmptyState icon={HeartPulse} title="No sick history" body="Recovered sick reports will appear here." />}
           {recovered.map((item) => (
-            <article className="card space-y-2" key={item.id}>
+            <SwipeHistoryCard
+              key={item.id}
+              onArchive={() => openArchive({ type: 'sick', id: item.id, label: `${item.bodyNumber ?? '-'} - ${item.rank ?? '-'} ${item.cadetName}` })}
+            >
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <h3 className="font-semibold">{item.bodyNumber ?? '-'} - {item.rank ?? '-'} {item.cadetName}</h3>
@@ -105,10 +164,7 @@ export function HistoryPage() {
                 <p><span className="font-semibold">Check out:</span> {item.checkOutTime ? new Date(item.checkOutTime).toLocaleString() : '-'}</p>
                 <p><span className="font-semibold">DO:</span> {item.dutyOfficerName ?? '-'}</p>
               </div>
-              <button className="btn-danger w-full" onClick={() => openArchive({ type: 'sick', id: item.id, label: `${item.bodyNumber ?? '-'} - ${item.rank ?? '-'} ${item.cadetName}` })} type="button">
-                <Archive size={18} /> Delete History
-              </button>
-            </article>
+            </SwipeHistoryCard>
           ))}
         </section>
       )}
@@ -117,7 +173,10 @@ export function HistoryPage() {
         <section className="space-y-3">
           {returned.length === 0 && <EmptyState icon={Car} title="No going-out history" body="Returned movement records will appear here." />}
           {returned.map((item) => (
-            <article className="card space-y-2" key={item.id}>
+            <SwipeHistoryCard
+              key={item.id}
+              onArchive={() => openArchive({ type: 'movement', id: item.id, label: `${item.bodyNumber ?? '-'} - ${item.rank} ${item.cadetName}` })}
+            >
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <h3 className="font-semibold">{item.bodyNumber ?? '-'} - {item.rank} {item.cadetName}</h3>
@@ -130,10 +189,7 @@ export function HistoryPage() {
                 <p><span className="font-semibold">Check out:</span> {item.returnTime ? new Date(item.returnTime).toLocaleString() : '-'}</p>
                 <p><span className="font-semibold">DO:</span> {item.dutyOfficerName ?? '-'}</p>
               </div>
-              <button className="btn-danger w-full" onClick={() => openArchive({ type: 'movement', id: item.id, label: `${item.bodyNumber ?? '-'} - ${item.rank} ${item.cadetName}` })} type="button">
-                <Archive size={18} /> Delete History
-              </button>
-            </article>
+            </SwipeHistoryCard>
           ))}
         </section>
       )}
