@@ -1,4 +1,4 @@
-const TOKEN_TTL_MS = 30_000;
+const TOKEN_TTL_MS = 120_000;
 
 export type QRTokenState = {
   token: string;
@@ -32,4 +32,3 @@ export function isQRTokenValid(state: QRTokenState | null): boolean {
 export function tokenSearch(state: QRTokenState): string {
   return `?token=${encodeURIComponent(state.token)}&expires=${state.expiresAt}`;
 }
-
