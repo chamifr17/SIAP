@@ -65,3 +65,33 @@ export function dutyWindowLabel(session = getDutySession()) {
   return `${start.toLocaleDateString()} 22:00 - ${end.toLocaleDateString()} 22:00`;
 }
 
+export function dutyWindow(session = getDutySession()) {
+  if (!session) return null;
+  const end = new Date(session.expiresAt);
+  const start = new Date(end);
+  start.setDate(start.getDate() - 1);
+  return { start, end };
+}
+
+export function dutyOfficerId(officerName?: string) {
+  return officerName?.match(/\(([^)]+)\)/)?.[1] ?? '';
+}
+
+export function dutySearchParams(session = getDutySession()) {
+  const window = dutyWindow(session);
+  if (!session?.officerName || !window) return '';
+  const params = new URLSearchParams({
+    duty_officer_name: session.officerName,
+    duty_officer_id: dutyOfficerId(session.officerName),
+    duty_started_at: window.start.toISOString(),
+    duty_ended_at: window.end.toISOString()
+  });
+  return params.toString();
+}
+
+export function isWithinDutyWindow(value?: string, session = getDutySession()) {
+  const window = dutyWindow(session);
+  if (!value || !window) return false;
+  const time = new Date(value).getTime();
+  return time >= window.start.getTime() && time < window.end.getTime();
+}

@@ -2,6 +2,7 @@ import { Car, CheckCircle2, HeartPulse } from 'lucide-react';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api';
+import { getDutySession, isWithinDutyWindow } from '../../lib/dutySession';
 import { EmptyState } from '../../ui/EmptyState';
 
 type Tab = 'sick' | 'movement';
@@ -10,8 +11,9 @@ export function HistoryPage() {
   const [tab, setTab] = useState<Tab>('sick');
   const movements = useQuery({ queryKey: ['movements'], queryFn: api.movements });
   const sick = useQuery({ queryKey: ['sickReports'], queryFn: api.sickReports });
-  const returned = (movements.data ?? []).filter((item) => item.status === 'returned');
-  const recovered = (sick.data ?? []).filter((item) => item.status === 'recovered');
+  const session = getDutySession();
+  const returned = (movements.data ?? []).filter((item) => item.status === 'returned' && (item.dutyOfficerName === session?.officerName || (!item.dutyOfficerName && isWithinDutyWindow(item.checkoutTime ?? item.createdAt, session))));
+  const recovered = (sick.data ?? []).filter((item) => item.status === 'recovered' && (item.dutyOfficerName === session?.officerName || (!item.dutyOfficerName && isWithinDutyWindow(item.checkInTime ?? item.createdAt, session))));
 
   return (
     <div className="space-y-4">

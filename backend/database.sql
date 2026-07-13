@@ -29,6 +29,10 @@ create table if not exists movement_requests (
   approved_by uuid references users(id),
   remarks text,
   qr_token text,
+  duty_officer_name text,
+  duty_officer_id text,
+  duty_started_at timestamptz,
+  duty_ended_at timestamptz,
   approval_time timestamptz,
   created_at timestamptz not null default now()
 );
@@ -49,6 +53,10 @@ create table if not exists sick_reports (
   status text not null default 'active',
   officer_remarks text,
   qr_token text,
+  duty_officer_name text,
+  duty_officer_id text,
+  duty_started_at timestamptz,
+  duty_ended_at timestamptz,
   check_in_time timestamptz not null default now(),
   check_out_time timestamptz,
   created_at timestamptz not null default now()

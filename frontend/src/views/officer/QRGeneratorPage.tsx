@@ -1,12 +1,15 @@
 import { QrCode } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { useEffect, useState } from 'react';
+import { dutySearchParams, getDutySession } from '../../lib/dutySession';
 import { createQRToken, secondsRemaining, tokenSearch } from '../../lib/qrToken';
 
 export function QRGeneratorPage() {
   const [qrState, setQrState] = useState(createQRToken);
   const [remaining, setRemaining] = useState(secondsRemaining(qrState.expiresAt));
-  const url = `${window.location.origin}/qr${tokenSearch(qrState)}`;
+  const dutyParams = dutySearchParams(getDutySession());
+  const tokenParams = tokenSearch(qrState).replace('?', '');
+  const url = `${window.location.origin}/qr?${[tokenParams, dutyParams].filter(Boolean).join('&')}`;
 
   useEffect(() => {
     const interval = window.setInterval(() => {

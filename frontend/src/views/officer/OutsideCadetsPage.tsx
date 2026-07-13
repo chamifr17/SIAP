@@ -2,6 +2,7 @@ import { Car, CheckCircle2, HeartPulse, Phone, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api';
+import { getDutySession, isWithinDutyWindow } from '../../lib/dutySession';
 import { EmptyState } from '../../ui/EmptyState';
 
 type Tab = 'sick' | 'movement';
@@ -16,8 +17,11 @@ export function OutsideCadetsPage() {
   };
   const recover = useMutation({ mutationFn: api.markSickRecovered, onSuccess: refresh });
   const returnMovement = useMutation({ mutationFn: api.markMovementReturned, onSuccess: refresh });
-  const activeSick = (sick.data ?? []).filter((item) => item.status === 'active');
-  const activeMovements = (movements.data ?? []).filter((item) => item.status === 'approved' || item.status === 'pending' || item.status === 'overdue');
+  const session = getDutySession();
+  const dutySick = (sick.data ?? []).filter((item) => item.dutyOfficerName === session?.officerName || (!item.dutyOfficerName && isWithinDutyWindow(item.checkInTime ?? item.createdAt, session)));
+  const dutyMovements = (movements.data ?? []).filter((item) => item.dutyOfficerName === session?.officerName || (!item.dutyOfficerName && isWithinDutyWindow(item.checkoutTime ?? item.createdAt, session)));
+  const activeSick = dutySick.filter((item) => item.status === 'active');
+  const activeMovements = dutyMovements.filter((item) => item.status === 'approved' || item.status === 'pending' || item.status === 'overdue');
 
   return (
     <div className="space-y-4">

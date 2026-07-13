@@ -40,6 +40,10 @@ export type MovementRequest = {
   approvedBy?: string;
   remarks?: string;
   qrToken?: string;
+  dutyOfficerName?: string;
+  dutyOfficerId?: string;
+  dutyStartedAt?: string;
+  dutyEndedAt?: string;
   createdAt: string;
 };
 
@@ -60,6 +64,10 @@ export type SickReport = {
   phone?: string;
   checkInTime?: string;
   checkOutTime?: string;
+  dutyOfficerName?: string;
+  dutyOfficerId?: string;
+  dutyStartedAt?: string;
+  dutyEndedAt?: string;
   createdAt: string;
 };
 

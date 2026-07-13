@@ -53,6 +53,10 @@ class MovementCreate(BaseModel):
     expected_return: datetime
     remarks: str | None = None
     qr_token: str | None = None
+    duty_officer_name: str | None = None
+    duty_officer_id: str | None = None
+    duty_started_at: datetime | None = None
+    duty_ended_at: datetime | None = None
 
 
 class MovementOut(MovementCreate):
@@ -89,6 +93,10 @@ class SickReportCreate(BaseModel):
     building: str | None = None
     room: str | None = None
     qr_token: str | None = None
+    duty_officer_name: str | None = None
+    duty_officer_id: str | None = None
+    duty_started_at: datetime | None = None
+    duty_ended_at: datetime | None = None
 
 
 class SickReportOut(SickReportCreate):

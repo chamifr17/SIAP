@@ -34,6 +34,10 @@ type BackendSickReport = {
   status: 'active' | 'recovered' | 'clinic';
   officer_remarks?: string;
   qr_token?: string;
+  duty_officer_name?: string;
+  duty_officer_id?: string;
+  duty_started_at?: string;
+  duty_ended_at?: string;
   check_in_time: string;
   check_out_time?: string;
   created_at: string;
@@ -58,6 +62,10 @@ type BackendMovement = {
   approval_time?: string;
   remarks?: string;
   qr_token?: string;
+  duty_officer_name?: string;
+  duty_officer_id?: string;
+  duty_started_at?: string;
+  duty_ended_at?: string;
   created_at: string;
 };
 
@@ -78,6 +86,10 @@ const mapSickReport = (item: BackendSickReport): SickReport => ({
   officerRemarks: item.officer_remarks,
   checkInTime: item.check_in_time,
   checkOutTime: item.check_out_time,
+  dutyOfficerName: item.duty_officer_name,
+  dutyOfficerId: item.duty_officer_id,
+  dutyStartedAt: item.duty_started_at,
+  dutyEndedAt: item.duty_ended_at,
   createdAt: item.created_at
 });
 
@@ -100,6 +112,10 @@ const mapMovement = (item: BackendMovement): MovementRequest => ({
   approvedBy: item.approved_by,
   remarks: item.remarks,
   qrToken: item.qr_token,
+  dutyOfficerName: item.duty_officer_name,
+  dutyOfficerId: item.duty_officer_id,
+  dutyStartedAt: item.duty_started_at,
+  dutyEndedAt: item.duty_ended_at,
   createdAt: item.created_at
 });
 
@@ -115,6 +131,10 @@ export type PublicSickReportPayload = {
   building?: string;
   room?: string;
   qrToken?: string;
+  dutyOfficerName?: string;
+  dutyOfficerId?: string;
+  dutyStartedAt?: string;
+  dutyEndedAt?: string;
 };
 
 export type PublicMovementPayload = {
@@ -129,6 +149,10 @@ export type PublicMovementPayload = {
   expectedReturn: string;
   remarks?: string;
   qrToken?: string;
+  dutyOfficerName?: string;
+  dutyOfficerId?: string;
+  dutyStartedAt?: string;
+  dutyEndedAt?: string;
 };
 
 export const api = {
@@ -172,7 +196,11 @@ export const api = {
         location_type: payload.locationType,
         building: payload.building || null,
         room: payload.room || null,
-        qr_token: payload.qrToken || null
+        qr_token: payload.qrToken || null,
+        duty_officer_name: payload.dutyOfficerName || null,
+        duty_officer_id: payload.dutyOfficerId || null,
+        duty_started_at: payload.dutyStartedAt || null,
+        duty_ended_at: payload.dutyEndedAt || null
       })
     });
     if (!response.ok) throw new Error('Failed to submit sick report');
@@ -197,7 +225,11 @@ export const api = {
         purpose: payload.purpose,
         expected_return: today.toISOString(),
         remarks: payload.remarks || null,
-        qr_token: payload.qrToken || null
+        qr_token: payload.qrToken || null,
+        duty_officer_name: payload.dutyOfficerName || null,
+        duty_officer_id: payload.dutyOfficerId || null,
+        duty_started_at: payload.dutyStartedAt || null,
+        duty_ended_at: payload.dutyEndedAt || null
       })
     });
     if (!response.ok) throw new Error('Failed to submit movement');

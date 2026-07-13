@@ -30,6 +30,13 @@ export function SickCheckInForm() {
   const [submitted, setSubmitted] = useState(false);
   const location = useLocation();
   const qrState = readQRToken(location.search);
+  const params = new URLSearchParams(location.search);
+  const dutyPayload = {
+    dutyOfficerName: params.get('duty_officer_name') ?? undefined,
+    dutyOfficerId: params.get('duty_officer_id') ?? undefined,
+    dutyStartedAt: params.get('duty_started_at') ?? undefined,
+    dutyEndedAt: params.get('duty_ended_at') ?? undefined
+  };
   const submitReport = useMutation({ mutationFn: api.createPublicSickReport, onSuccess: () => setSubmitted(true) });
   const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -46,7 +53,7 @@ export function SickCheckInForm() {
   }
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit((data) => submitReport.mutate({ ...data, qrToken: qrState?.token }))}>
+    <form className="space-y-4" onSubmit={handleSubmit((data) => submitReport.mutate({ ...data, ...dutyPayload, qrToken: qrState?.token }))}>
       <section className="card space-y-2"><h2 className="text-xl font-bold">Lapor DO Sakit</h2><p className="text-sm text-slate-500">Fill in your personal and sick report details.</p><p className="text-xs font-semibold text-olive-700 dark:text-olive-100">QR valid for {secondsRemaining(qrState!.expiresAt)} seconds</p></section>
       <label className="block space-y-2"><span className="label">No. Badan</span><input className="field" {...register('bodyNumber')} />{errors.bodyNumber && <p className="text-sm text-red-600">{errors.bodyNumber.message}</p>}</label>
       <div className="grid grid-cols-2 gap-3">
