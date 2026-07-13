@@ -1,7 +1,14 @@
 import { LogOut, Settings, SlidersHorizontal, UserRound } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { clearDutySession } from '../../lib/dutySession';
 
 export function MorePage() {
+  const navigate = useNavigate();
+  const logout = () => {
+    clearDutySession();
+    navigate('/login', { replace: true });
+  };
+
   return (
     <div className="space-y-4">
       <section className="card space-y-2">
@@ -11,8 +18,7 @@ export function MorePage() {
       <button className="btn-secondary w-full justify-start"><UserRound size={19} /> Personalize Account</button>
       <button className="btn-secondary w-full justify-start"><Settings size={19} /> Settings</button>
       <button className="btn-secondary w-full justify-start"><SlidersHorizontal size={19} /> Utilities</button>
-      <Link className="btn-danger w-full justify-start" to="/login"><LogOut size={19} /> Logout</Link>
+      <button className="btn-danger w-full justify-start" onClick={logout}><LogOut size={19} /> Logout</button>
     </div>
   );
 }
-
