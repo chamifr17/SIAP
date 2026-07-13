@@ -13,7 +13,12 @@ create table if not exists users (
 
 create table if not exists movement_requests (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references users(id),
+  user_id uuid,
+  body_number text,
+  rank text,
+  name text,
+  phone text,
+  vehicle text,
   destination text not null,
   purpose text not null,
   expected_return timestamptz not null,
@@ -22,6 +27,8 @@ create table if not exists movement_requests (
   status text not null default 'pending',
   approved_by uuid references users(id),
   remarks text,
+  qr_token text,
+  approval_time timestamptz,
   created_at timestamptz not null default now()
 );
 

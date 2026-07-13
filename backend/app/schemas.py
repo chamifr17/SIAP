@@ -42,18 +42,24 @@ class MovementStatus(str, Enum):
 
 
 class MovementCreate(BaseModel):
+    body_number: str
+    rank: str
+    name: str
+    phone: str
+    vehicle: str
     destination: str = Field(min_length=2)
     purpose: str = Field(min_length=2)
     expected_return: datetime
     remarks: str | None = None
+    qr_token: str | None = None
 
 
 class MovementOut(MovementCreate):
     id: UUID = Field(default_factory=uuid4)
     user_id: UUID
-    checkout_time: datetime | None = None
+    checkout_time: datetime | None = Field(default_factory=datetime.utcnow)
     return_time: datetime | None = None
-    status: MovementStatus = MovementStatus.pending
+    status: MovementStatus = MovementStatus.approved
     approved_by: UUID | None = None
     approval_time: datetime | None = None
     created_at: datetime = Field(default_factory=datetime.utcnow)

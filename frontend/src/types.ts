@@ -25,7 +25,10 @@ export type MovementRequest = {
   id: string;
   userId: string;
   cadetName: string;
+  bodyNumber?: string;
   rank: string;
+  phone?: string;
+  vehicle?: string;
   destination: string;
   purpose: string;
   expectedReturn: string;
@@ -35,8 +38,7 @@ export type MovementRequest = {
   status: 'pending' | 'approved' | 'rejected' | 'returned' | 'overdue';
   approvedBy?: string;
   remarks?: string;
-  bodyNumber?: string;
-  vehicle?: string;
+  qrToken?: string;
   createdAt: string;
 };
 

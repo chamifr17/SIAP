@@ -1,8 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 import { z } from 'zod';
+import { api } from '../../lib/api';
 import { isQRTokenValid, readQRToken, secondsRemaining } from '../../lib/qrToken';
 
 const schema = z.object({
@@ -23,6 +25,7 @@ export function OutsideCheckInForm() {
   const [submitted, setSubmitted] = useState(false);
   const location = useLocation();
   const qrState = readQRToken(location.search);
+  const submitMovement = useMutation({ mutationFn: api.createPublicMovement, onSuccess: () => setSubmitted(true) });
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   if (!isQRTokenValid(qrState)) {
@@ -34,7 +37,7 @@ export function OutsideCheckInForm() {
   }
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit(() => setSubmitted(true))}>
+    <form className="space-y-4" onSubmit={handleSubmit((data) => submitMovement.mutate({ ...data, qrToken: qrState?.token }))}>
       <section className="card space-y-2"><h2 className="text-xl font-bold">Go Outside Form</h2><p className="text-sm text-slate-500">Fill in your personal and movement details before leaving.</p><p className="text-xs font-semibold text-olive-700 dark:text-olive-100">QR valid for {secondsRemaining(qrState!.expiresAt)} seconds</p></section>
       <label className="block space-y-2"><span className="label">No. Badan</span><input className="field" {...register('bodyNumber')} />{errors.bodyNumber && <p className="text-sm text-red-600">{errors.bodyNumber.message}</p>}</label>
       <div className="grid grid-cols-2 gap-3">
@@ -47,7 +50,8 @@ export function OutsideCheckInForm() {
       <label className="block space-y-2"><span className="label">Purpose</span><input className="field" {...register('purpose')} />{errors.purpose && <p className="text-sm text-red-600">{errors.purpose.message}</p>}</label>
       <label className="block space-y-2"><span className="label">Expected Return</span><input className="field" type="time" {...register('expectedReturn')} />{errors.expectedReturn && <p className="text-sm text-red-600">{errors.expectedReturn.message}</p>}</label>
       <label className="block space-y-2"><span className="label">Remarks</span><textarea className="field min-h-24" {...register('remarks')} /></label>
-      <button className="btn-primary w-full">Check In Outside Movement</button>
+      {submitMovement.isError && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">Unable to submit. Please inform the Duty Officer.</p>}
+      <button className="btn-primary w-full" disabled={submitMovement.isPending}>{submitMovement.isPending ? 'Submitting...' : 'Check In Outside Movement'}</button>
     </form>
   );
 }

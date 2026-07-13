@@ -38,6 +38,27 @@ type BackendSickReport = {
   created_at: string;
 };
 
+type BackendMovement = {
+  id: string;
+  user_id: string;
+  body_number?: string;
+  rank: string;
+  name: string;
+  phone?: string;
+  vehicle?: string;
+  destination: string;
+  purpose: string;
+  expected_return: string;
+  checkout_time?: string;
+  return_time?: string;
+  status: 'pending' | 'approved' | 'rejected' | 'returned' | 'overdue';
+  approved_by?: string;
+  approval_time?: string;
+  remarks?: string;
+  qr_token?: string;
+  created_at: string;
+};
+
 const mapSickReport = (item: BackendSickReport): SickReport => ({
   id: item.id,
   userId: item.user_id,
@@ -57,6 +78,27 @@ const mapSickReport = (item: BackendSickReport): SickReport => ({
   createdAt: item.created_at
 });
 
+const mapMovement = (item: BackendMovement): MovementRequest => ({
+  id: item.id,
+  userId: item.user_id,
+  cadetName: item.name,
+  bodyNumber: item.body_number,
+  rank: item.rank,
+  phone: item.phone,
+  vehicle: item.vehicle,
+  destination: item.destination,
+  purpose: item.purpose,
+  expectedReturn: item.expected_return,
+  checkoutTime: item.checkout_time,
+  approvalTime: item.approval_time,
+  returnTime: item.return_time,
+  status: item.status,
+  approvedBy: item.approved_by,
+  remarks: item.remarks,
+  qrToken: item.qr_token,
+  createdAt: item.created_at
+});
+
 export type PublicSickReportPayload = {
   bodyNumber: string;
   rank: string;
@@ -70,13 +112,27 @@ export type PublicSickReportPayload = {
   qrToken?: string;
 };
 
+export type PublicMovementPayload = {
+  bodyNumber: string;
+  rank: string;
+  name: string;
+  phone: string;
+  vehicle: string;
+  destination: string;
+  purpose: string;
+  expectedReturn: string;
+  remarks?: string;
+  qrToken?: string;
+};
+
 export const api = {
   login: async (_role: Role): Promise<User> => dutyOfficer,
   me: async (_role: Role): Promise<User> => dutyOfficer,
   movements: async (): Promise<MovementRequest[]> => {
     const response = await fetch(`${apiBaseUrl()}/movements`);
     if (!response.ok) throw new Error('Failed to load movements');
-    return [];
+    const data = await response.json() as BackendMovement[];
+    return data.map(mapMovement);
   },
   sickReports: async (): Promise<SickReport[]> => {
     const response = await fetch(`${apiBaseUrl()}/sick-reports`);
@@ -114,5 +170,29 @@ export const api = {
     });
     if (!response.ok) throw new Error('Failed to submit sick report');
     return mapSickReport(await response.json() as BackendSickReport);
+  },
+  createPublicMovement: async (payload: PublicMovementPayload): Promise<MovementRequest> => {
+    const today = new Date();
+    const [hours, minutes] = payload.expectedReturn.split(':').map(Number);
+    today.setHours(hours, minutes, 0, 0);
+
+    const response = await fetch(`${apiBaseUrl()}/movements`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        body_number: payload.bodyNumber,
+        rank: payload.rank,
+        name: payload.name,
+        phone: payload.phone,
+        vehicle: payload.vehicle,
+        destination: payload.destination,
+        purpose: payload.purpose,
+        expected_return: today.toISOString(),
+        remarks: payload.remarks || null,
+        qr_token: payload.qrToken || null
+      })
+    });
+    if (!response.ok) throw new Error('Failed to submit movement');
+    return mapMovement(await response.json() as BackendMovement);
   }
 };
