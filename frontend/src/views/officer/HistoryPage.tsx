@@ -2,7 +2,6 @@ import { Car, CheckCircle2, HeartPulse } from 'lucide-react';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api';
-import { getDutySession, isWithinDutyWindow } from '../../lib/dutySession';
 import { EmptyState } from '../../ui/EmptyState';
 
 type Tab = 'sick' | 'movement';
@@ -11,9 +10,8 @@ export function HistoryPage() {
   const [tab, setTab] = useState<Tab>('sick');
   const movements = useQuery({ queryKey: ['movements'], queryFn: api.movements });
   const sick = useQuery({ queryKey: ['sickReports'], queryFn: api.sickReports });
-  const session = getDutySession();
-  const returned = (movements.data ?? []).filter((item) => item.status === 'returned' && (item.dutyOfficerName === session?.officerName || (!item.dutyOfficerName && isWithinDutyWindow(item.checkoutTime ?? item.createdAt, session))));
-  const recovered = (sick.data ?? []).filter((item) => item.status === 'recovered' && (item.dutyOfficerName === session?.officerName || (!item.dutyOfficerName && isWithinDutyWindow(item.checkInTime ?? item.createdAt, session))));
+  const returned = (movements.data ?? []).filter((item) => item.status === 'returned');
+  const recovered = (sick.data ?? []).filter((item) => item.status === 'recovered');
 
   return (
     <div className="space-y-4">
@@ -37,7 +35,7 @@ export function HistoryPage() {
             <article className="card space-y-2" key={item.id}>
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <h3 className="font-semibold">{item.bodyNumber ?? '-'} · {item.rank ?? '-'} {item.cadetName}</h3>
+                  <h3 className="font-semibold">{item.bodyNumber ?? '-'} - {item.rank ?? '-'} {item.cadetName}</h3>
                   <p className="text-sm text-slate-500">{item.peringkat ?? '-'}</p>
                 </div>
                 <CheckCircle2 className="text-emerald-600" size={20} />
@@ -45,6 +43,7 @@ export function HistoryPage() {
               <div className="grid gap-1 text-sm text-slate-600 dark:text-slate-300">
                 <p><span className="font-semibold">From:</span> {item.locationType}{item.room ? `, ${item.building}-${item.room}` : ''}</p>
                 <p><span className="font-semibold">Check out:</span> {item.checkOutTime ? new Date(item.checkOutTime).toLocaleString() : '-'}</p>
+                <p><span className="font-semibold">DO:</span> {item.dutyOfficerName ?? '-'}</p>
               </div>
             </article>
           ))}
@@ -58,7 +57,7 @@ export function HistoryPage() {
             <article className="card space-y-2" key={item.id}>
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <h3 className="font-semibold">{item.bodyNumber ?? '-'} · {item.rank} {item.cadetName}</h3>
+                  <h3 className="font-semibold">{item.bodyNumber ?? '-'} - {item.rank} {item.cadetName}</h3>
                   <p className="text-sm text-slate-500">{item.peringkat ?? '-'}</p>
                 </div>
                 <CheckCircle2 className="text-emerald-600" size={20} />
@@ -66,6 +65,7 @@ export function HistoryPage() {
               <div className="grid gap-1 text-sm text-slate-600 dark:text-slate-300">
                 <p><span className="font-semibold">From:</span> {item.destination}</p>
                 <p><span className="font-semibold">Check out:</span> {item.returnTime ? new Date(item.returnTime).toLocaleString() : '-'}</p>
+                <p><span className="font-semibold">DO:</span> {item.dutyOfficerName ?? '-'}</p>
               </div>
             </article>
           ))}

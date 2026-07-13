@@ -2,14 +2,14 @@ import { HeartPulse, ShieldCheck, Timer } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { api } from '../../lib/api';
-import { dutyWindowLabel, getDutySession, isWithinDutyWindow } from '../../lib/dutySession';
+import { dutyWindowLabel, getDutySession } from '../../lib/dutySession';
 
 export function OfficerHome() {
   const movements = useQuery({ queryKey: ['movements'], queryFn: api.movements });
   const sick = useQuery({ queryKey: ['sickReports'], queryFn: api.sickReports });
   const session = getDutySession();
-  const items = (movements.data ?? []).filter((item) => item.dutyOfficerName === session?.officerName || (!item.dutyOfficerName && isWithinDutyWindow(item.checkoutTime ?? item.createdAt, session)));
-  const sickItems = (sick.data ?? []).filter((item) => item.dutyOfficerName === session?.officerName || (!item.dutyOfficerName && isWithinDutyWindow(item.checkInTime ?? item.createdAt, session)));
+  const items = movements.data ?? [];
+  const sickItems = sick.data ?? [];
   const activeOutside = items.filter((x) => x.status === 'approved' || x.status === 'overdue').length;
   const activeSick = sickItems.filter((x) => x.status === 'active').length;
   const cards = [
