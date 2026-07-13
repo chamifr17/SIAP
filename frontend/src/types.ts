@@ -27,6 +27,7 @@ export type MovementRequest = {
   cadetName: string;
   bodyNumber?: string;
   rank: string;
+  peringkat?: string;
   phone?: string;
   vehicle?: string;
   destination: string;
@@ -55,6 +56,7 @@ export type SickReport = {
   officerRemarks?: string;
   bodyNumber?: string;
   rank?: string;
+  peringkat?: string;
   phone?: string;
   checkInTime?: string;
   checkOutTime?: string;

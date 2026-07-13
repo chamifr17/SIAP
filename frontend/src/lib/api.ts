@@ -24,6 +24,7 @@ type BackendSickReport = {
   body_number: string;
   rank: string;
   name: string;
+  peringkat?: string;
   phone: string;
   symptoms: string;
   description: string;
@@ -44,6 +45,7 @@ type BackendMovement = {
   body_number?: string;
   rank: string;
   name: string;
+  peringkat?: string;
   phone?: string;
   vehicle?: string;
   destination: string;
@@ -65,6 +67,7 @@ const mapSickReport = (item: BackendSickReport): SickReport => ({
   cadetName: item.name,
   bodyNumber: item.body_number,
   rank: item.rank,
+  peringkat: item.peringkat,
   phone: item.phone,
   symptoms: item.symptoms,
   description: item.description,
@@ -84,6 +87,7 @@ const mapMovement = (item: BackendMovement): MovementRequest => ({
   cadetName: item.name,
   bodyNumber: item.body_number,
   rank: item.rank,
+  peringkat: item.peringkat,
   phone: item.phone,
   vehicle: item.vehicle,
   destination: item.destination,
@@ -103,6 +107,7 @@ export type PublicSickReportPayload = {
   bodyNumber: string;
   rank: string;
   name: string;
+  peringkat: string;
   phone: string;
   symptoms: string;
   description: string;
@@ -116,6 +121,7 @@ export type PublicMovementPayload = {
   bodyNumber: string;
   rank: string;
   name: string;
+  peringkat: string;
   phone: string;
   vehicle: string;
   destination: string;
@@ -159,6 +165,7 @@ export const api = {
         body_number: payload.bodyNumber,
         rank: payload.rank,
         name: payload.name,
+        peringkat: payload.peringkat,
         phone: payload.phone,
         symptoms: payload.symptoms,
         description: payload.description,
@@ -183,6 +190,7 @@ export const api = {
         body_number: payload.bodyNumber,
         rank: payload.rank,
         name: payload.name,
+        peringkat: payload.peringkat,
         phone: payload.phone,
         vehicle: payload.vehicle,
         destination: payload.destination,

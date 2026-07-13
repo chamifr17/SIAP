@@ -11,6 +11,7 @@ const schema = z.object({
   bodyNumber: z.string().min(2, 'No. badan is required'),
   rank: z.string().min(2, 'Pangkat is required'),
   name: z.string().min(2, 'Name is required'),
+  peringkat: z.string().min(1, 'Peringkat is required'),
   vehicle: z.string().min(2, 'Vehicle details are required'),
   destination: z.string().min(2, 'Destination is required'),
   purpose: z.string().min(2, 'Purpose is required'),
@@ -45,6 +46,7 @@ export function OutsideCheckInForm() {
         <label className="block space-y-2"><span className="label">Phone</span><input className="field" inputMode="tel" {...register('phone')} />{errors.phone && <p className="text-sm text-red-600">{errors.phone.message}</p>}</label>
       </div>
       <label className="block space-y-2"><span className="label">Nama</span><input className="field" {...register('name')} />{errors.name && <p className="text-sm text-red-600">{errors.name.message}</p>}</label>
+      <label className="block space-y-2"><span className="label">Peringkat</span><select className="field" {...register('peringkat')}><option value="">Select</option><option>Peringkat 1</option><option>Peringkat 2</option><option>Peringkat 3</option><option>Peringkat 4</option></select>{errors.peringkat && <p className="text-sm text-red-600">{errors.peringkat.message}</p>}</label>
       <label className="block space-y-2"><span className="label">Kenderaan</span><input className="field" placeholder="Car / Motorcycle / Walking" {...register('vehicle')} />{errors.vehicle && <p className="text-sm text-red-600">{errors.vehicle.message}</p>}</label>
       <label className="block space-y-2"><span className="label">Destination</span><input className="field" {...register('destination')} />{errors.destination && <p className="text-sm text-red-600">{errors.destination.message}</p>}</label>
       <label className="block space-y-2"><span className="label">Purpose</span><input className="field" {...register('purpose')} />{errors.purpose && <p className="text-sm text-red-600">{errors.purpose.message}</p>}</label>

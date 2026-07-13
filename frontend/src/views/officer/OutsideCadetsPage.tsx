@@ -49,7 +49,7 @@ export function OutsideCadetsPage() {
             <article className="card space-y-3" key={item.id}>
               <div>
                 <h3 className="font-semibold">{item.rank ?? 'CDT'} {item.cadetName}</h3>
-                <p className="text-sm text-slate-500">{item.bodyNumber ?? 'No body number'}</p>
+                <p className="text-sm text-slate-500">{item.bodyNumber ?? 'No body number'} · {item.peringkat ?? '-'}</p>
               </div>
               <div className="grid gap-1 rounded-lg bg-olive-50 p-3 text-sm dark:bg-slate-800">
                 <p><span className="font-semibold">Symptoms:</span> {item.symptoms}</p>
@@ -75,7 +75,7 @@ export function OutsideCadetsPage() {
               <div className="flex justify-between gap-3">
                 <div>
                   <h3 className="font-semibold">{item.rank} {item.cadetName}</h3>
-                  <p className="text-sm text-slate-500">{item.bodyNumber ?? 'No body number'}</p>
+                  <p className="text-sm text-slate-500">{item.bodyNumber ?? 'No body number'} · {item.peringkat ?? '-'}</p>
                 </div>
                 <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800">{item.status}</span>
               </div>

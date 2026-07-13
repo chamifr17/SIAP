@@ -1,10 +1,15 @@
 import { Bell, History, Home, MoreHorizontal, QrCode, Shield, UsersRound } from 'lucide-react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { dutyOfficers, getDutySession, setDutyOfficer } from '../lib/dutySession';
 import type { Role } from '../types';
 
 type Props = { role: Role };
 
 export function AppLayout({ role }: Props) {
+  const navigate = useNavigate();
+  const [session, setSession] = useState(getDutySession);
+  const [selectedOfficer, setSelectedOfficer] = useState('');
   const officerNav = [
     { to: '/officer', icon: Home, label: 'Home' },
     { to: '/officer/outside', icon: UsersRound, label: 'Cadets' },
@@ -13,6 +18,21 @@ export function AppLayout({ role }: Props) {
     { to: '/officer/more', icon: MoreHorizontal, label: 'More' }
   ];
   const nav = officerNav;
+
+  useEffect(() => {
+    const active = getDutySession();
+    if (!active) {
+      navigate('/login');
+      return;
+    }
+    setSession(active);
+  }, [navigate]);
+
+  const saveOfficer = () => {
+    if (!selectedOfficer) return;
+    setDutyOfficer(selectedOfficer);
+    setSession(getDutySession());
+  };
 
   return (
     <div className="app-page">
@@ -44,6 +64,19 @@ export function AppLayout({ role }: Props) {
             </NavLink>
           ))}
         </nav>
+        {session && !session.officerName && (
+          <div className="fixed inset-0 z-50 grid place-items-end bg-black/50 p-4">
+            <section className="w-full max-w-md rounded-lg bg-white p-4 shadow-soft dark:bg-slate-900">
+              <h2 className="text-xl font-bold">Select Duty Officer</h2>
+              <p className="mt-1 text-sm text-slate-500">Choose the DO taking this 22:00 to 22:00 duty.</p>
+              <select className="field mt-4" value={selectedOfficer} onChange={(event) => setSelectedOfficer(event.target.value)}>
+                <option value="">Select DO</option>
+                {dutyOfficers.map((officer) => <option key={officer}>{officer}</option>)}
+              </select>
+              <button className="btn-primary mt-4 w-full" disabled={!selectedOfficer} onClick={saveOfficer}>Continue</button>
+            </section>
+          </div>
+        )}
       </div>
     </div>
   );

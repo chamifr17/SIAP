@@ -1,6 +1,7 @@
 alter table movement_requests add column if not exists body_number text;
 alter table movement_requests add column if not exists rank text;
 alter table movement_requests add column if not exists name text;
+alter table movement_requests add column if not exists peringkat text;
 alter table movement_requests add column if not exists phone text;
 alter table movement_requests add column if not exists vehicle text;
 alter table movement_requests add column if not exists qr_token text;

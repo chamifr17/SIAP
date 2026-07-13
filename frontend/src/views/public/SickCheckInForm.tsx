@@ -11,6 +11,7 @@ const schema = z.object({
   bodyNumber: z.string().min(2, 'No. badan is required'),
   rank: z.string().min(2, 'Pangkat is required'),
   name: z.string().min(2, 'Name is required'),
+  peringkat: z.string().min(1, 'Peringkat is required'),
   phone: z.string().min(6, 'Phone number is required'),
   symptoms: z.string().min(1, 'Select symptoms'),
   description: z.string().min(5, 'Describe your condition'),
@@ -53,6 +54,7 @@ export function SickCheckInForm() {
         <label className="block space-y-2"><span className="label">Phone</span><input className="field" inputMode="tel" {...register('phone')} />{errors.phone && <p className="text-sm text-red-600">{errors.phone.message}</p>}</label>
       </div>
       <label className="block space-y-2"><span className="label">Nama</span><input className="field" {...register('name')} />{errors.name && <p className="text-sm text-red-600">{errors.name.message}</p>}</label>
+      <label className="block space-y-2"><span className="label">Peringkat</span><select className="field" {...register('peringkat')}><option value="">Select</option><option>Peringkat 1</option><option>Peringkat 2</option><option>Peringkat 3</option><option>Peringkat 4</option></select>{errors.peringkat && <p className="text-sm text-red-600">{errors.peringkat.message}</p>}</label>
       <label className="block space-y-2"><span className="label">Symptoms</span><select className="field" {...register('symptoms')}><option value="">Select</option><option>Fever</option><option>Headache</option><option>Stomach Pain</option><option>Injury</option><option>Others</option></select>{errors.symptoms && <p className="text-sm text-red-600">{errors.symptoms.message}</p>}</label>
       <label className="block space-y-2"><span className="label">Description</span><textarea className="field min-h-24" {...register('description')} />{errors.description && <p className="text-sm text-red-600">{errors.description.message}</p>}</label>
       <label className="block space-y-2"><span className="label">Rest Location</span><select className="field" {...register('locationType')}><option>Duty Officer Room</option><option>Own Room</option></select></label>
