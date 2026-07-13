@@ -194,5 +194,15 @@ export const api = {
     });
     if (!response.ok) throw new Error('Failed to submit movement');
     return mapMovement(await response.json() as BackendMovement);
+  },
+  markSickRecovered: async (id: string): Promise<SickReport> => {
+    const response = await fetch(`${apiBaseUrl()}/sick-reports/${id}/recover`, { method: 'POST' });
+    if (!response.ok) throw new Error('Failed to mark recovered');
+    return mapSickReport(await response.json() as BackendSickReport);
+  },
+  markMovementReturned: async (id: string): Promise<MovementRequest> => {
+    const response = await fetch(`${apiBaseUrl()}/movements/${id}/return`, { method: 'POST' });
+    if (!response.ok) throw new Error('Failed to mark returned');
+    return mapMovement(await response.json() as BackendMovement);
   }
 };

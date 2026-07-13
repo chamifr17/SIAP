@@ -1,3 +1,4 @@
+from datetime import datetime
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter
@@ -36,7 +37,7 @@ def mark_recovered(report_id: UUID) -> SickReportOut:
     if supabase:
         response = (
             supabase.table("sick_reports")
-            .update({"status": SickStatus.recovered.value})
+            .update({"status": SickStatus.recovered.value, "check_out_time": datetime.utcnow().isoformat()})
             .eq("id", str(report_id))
             .execute()
         )
@@ -45,7 +46,7 @@ def mark_recovered(report_id: UUID) -> SickReportOut:
 
     for index, report in enumerate(_sick_reports):
         if report.id == report_id:
-            updated = report.model_copy(update={"status": SickStatus.recovered})
+            updated = report.model_copy(update={"status": SickStatus.recovered, "check_out_time": datetime.utcnow()})
             _sick_reports[index] = updated
             return updated
     return SickReportOut(

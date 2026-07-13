@@ -1,6 +1,6 @@
-import { Car, HeartPulse, Phone, RefreshCw } from 'lucide-react';
+import { Car, CheckCircle2, HeartPulse, Phone, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api';
 import { EmptyState } from '../../ui/EmptyState';
 
@@ -10,13 +10,14 @@ export function OutsideCadetsPage() {
   const [tab, setTab] = useState<Tab>('sick');
   const movements = useQuery({ queryKey: ['movements'], queryFn: api.movements, refetchInterval: 10_000 });
   const sick = useQuery({ queryKey: ['sickReports'], queryFn: api.sickReports, refetchInterval: 10_000 });
-  const activeSick = (sick.data ?? []).filter((item) => item.status === 'active');
-  const activeMovements = (movements.data ?? []).filter((item) => item.status === 'approved' || item.status === 'pending' || item.status === 'overdue');
-
   const refresh = () => {
     void movements.refetch();
     void sick.refetch();
   };
+  const recover = useMutation({ mutationFn: api.markSickRecovered, onSuccess: refresh });
+  const returnMovement = useMutation({ mutationFn: api.markMovementReturned, onSuccess: refresh });
+  const activeSick = (sick.data ?? []).filter((item) => item.status === 'active');
+  const activeMovements = (movements.data ?? []).filter((item) => item.status === 'approved' || item.status === 'pending' || item.status === 'overdue');
 
   return (
     <div className="space-y-4">
@@ -57,6 +58,9 @@ export function OutsideCadetsPage() {
                 <p><span className="font-semibold">Check in:</span> {item.checkInTime ? new Date(item.checkInTime).toLocaleString() : '-'}</p>
               </div>
               {item.phone && <a className="btn-secondary w-full justify-start" href={`tel:${item.phone}`}><Phone size={18} /> {item.phone}</a>}
+              <button className="btn-primary w-full" disabled={recover.isPending} onClick={() => recover.mutate(item.id)}>
+                <CheckCircle2 size={18} /> Verify Recovered
+              </button>
             </article>
           ))}
         </section>
@@ -83,6 +87,9 @@ export function OutsideCadetsPage() {
                 <p><span className="font-semibold">Check in:</span> {item.checkoutTime ? new Date(item.checkoutTime).toLocaleString() : '-'}</p>
               </div>
               {item.phone && <a className="btn-secondary w-full justify-start" href={`tel:${item.phone}`}><Phone size={18} /> {item.phone}</a>}
+              <button className="btn-primary w-full" disabled={returnMovement.isPending} onClick={() => returnMovement.mutate(item.id)}>
+                <CheckCircle2 size={18} /> Verify Returned
+              </button>
             </article>
           ))}
         </section>

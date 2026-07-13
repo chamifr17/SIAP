@@ -45,3 +45,40 @@ def approve_movement(movement_id: UUID) -> MovementOut:
         approved_by=uuid4(),
         status=MovementStatus.approved,
     )
+
+
+@router.post("/{movement_id}/return", response_model=MovementOut)
+def mark_returned(movement_id: UUID) -> MovementOut:
+    now = datetime.utcnow()
+    supabase = get_supabase()
+    if supabase:
+        response = (
+            supabase.table("movement_requests")
+            .update({"status": MovementStatus.returned.value, "return_time": now.isoformat()})
+            .eq("id", str(movement_id))
+            .execute()
+        )
+        if response.data:
+            return MovementOut(**response.data[0])
+
+    for index, movement in enumerate(_movements):
+        if movement.id == movement_id:
+            updated = movement.model_copy(update={"status": MovementStatus.returned, "return_time": now})
+            _movements[index] = updated
+            return updated
+
+    return MovementOut(
+        id=movement_id,
+        user_id=uuid4(),
+        body_number="UNKNOWN",
+        rank="CDT",
+        name="Unknown Cadet",
+        phone="-",
+        vehicle="-",
+        destination="Unknown",
+        purpose="Record was not found.",
+        expected_return=now,
+        checkout_time=now,
+        return_time=now,
+        status=MovementStatus.returned,
+    )
