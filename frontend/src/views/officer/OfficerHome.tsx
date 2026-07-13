@@ -1,4 +1,4 @@
-import { HeartPulse, ShieldCheck, Timer } from 'lucide-react';
+import { HeartPulse, Timer } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { api } from '../../lib/api';
@@ -19,18 +19,13 @@ export function OfficerHome() {
 
   return (
     <div className="space-y-4">
-      <section className="card space-y-3">
-        <div className="flex items-center gap-3">
-          <div className="grid size-12 place-items-center rounded-lg bg-olive-700 text-white">
-            <ShieldCheck size={24} />
-          </div>
-          <div>
-            <p className="text-sm text-slate-500">Person on duty</p>
-            <h2 className="text-xl font-bold">{session?.officerName ?? 'Not selected'}</h2>
-          </div>
+      <section className="card space-y-4">
+        <div className="rounded-lg border border-olive-100 bg-olive-50 p-4 dark:border-slate-800 dark:bg-slate-800">
+          <p className="text-xs font-bold uppercase text-olive-700 dark:text-olive-100">Person on duty</p>
+          <h2 className="mt-2 text-xl font-bold leading-tight">{session?.officerName ?? 'Not selected'}</h2>
         </div>
         <div className="grid gap-3 text-sm">
-          <div className="rounded-lg bg-olive-50 p-3 dark:bg-slate-800">
+          <div className="rounded-lg bg-white p-3 dark:bg-slate-900">
             <p className="text-slate-500">Duty Duration</p>
             <strong>{dutyWindowLabel(session)}</strong>
           </div>
