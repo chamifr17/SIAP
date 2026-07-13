@@ -41,6 +41,10 @@ type BackendSickReport = {
   check_in_time: string;
   check_out_time?: string;
   created_at: string;
+  is_archived?: boolean;
+  delete_reason?: string;
+  deleted_at?: string;
+  deleted_by?: string;
 };
 
 type BackendMovement = {
@@ -67,6 +71,10 @@ type BackendMovement = {
   duty_started_at?: string;
   duty_ended_at?: string;
   created_at: string;
+  is_archived?: boolean;
+  delete_reason?: string;
+  deleted_at?: string;
+  deleted_by?: string;
 };
 
 const mapSickReport = (item: BackendSickReport): SickReport => ({
@@ -90,7 +98,11 @@ const mapSickReport = (item: BackendSickReport): SickReport => ({
   dutyOfficerId: item.duty_officer_id,
   dutyStartedAt: item.duty_started_at,
   dutyEndedAt: item.duty_ended_at,
-  createdAt: item.created_at
+  createdAt: item.created_at,
+  isArchived: item.is_archived,
+  deleteReason: item.delete_reason,
+  deletedAt: item.deleted_at,
+  deletedBy: item.deleted_by
 });
 
 const mapMovement = (item: BackendMovement): MovementRequest => ({
@@ -116,7 +128,11 @@ const mapMovement = (item: BackendMovement): MovementRequest => ({
   dutyOfficerId: item.duty_officer_id,
   dutyStartedAt: item.duty_started_at,
   dutyEndedAt: item.duty_ended_at,
-  createdAt: item.created_at
+  createdAt: item.created_at,
+  isArchived: item.is_archived,
+  deleteReason: item.delete_reason,
+  deletedAt: item.deleted_at,
+  deletedBy: item.deleted_by
 });
 
 export type PublicSickReportPayload = {
@@ -167,6 +183,18 @@ export const api = {
   sickReports: async (): Promise<SickReport[]> => {
     const response = await fetch(`${apiBaseUrl()}/sick-reports`);
     if (!response.ok) throw new Error('Failed to load sick reports');
+    const data = await response.json() as BackendSickReport[];
+    return data.map(mapSickReport);
+  },
+  archivedMovements: async (): Promise<MovementRequest[]> => {
+    const response = await fetch(`${apiBaseUrl()}/movements/archived`);
+    if (!response.ok) throw new Error('Failed to load archived movements');
+    const data = await response.json() as BackendMovement[];
+    return data.map(mapMovement);
+  },
+  archivedSickReports: async (): Promise<SickReport[]> => {
+    const response = await fetch(`${apiBaseUrl()}/sick-reports/archived`);
+    if (!response.ok) throw new Error('Failed to load archived sick reports');
     const data = await response.json() as BackendSickReport[];
     return data.map(mapSickReport);
   },
@@ -243,6 +271,24 @@ export const api = {
   markMovementReturned: async (id: string): Promise<MovementRequest> => {
     const response = await fetch(`${apiBaseUrl()}/movements/${id}/return`, { method: 'POST' });
     if (!response.ok) throw new Error('Failed to mark returned');
+    return mapMovement(await response.json() as BackendMovement);
+  },
+  archiveSickReport: async ({ id, reason, deletedBy }: { id: string; reason: string; deletedBy?: string }): Promise<SickReport> => {
+    const response = await fetch(`${apiBaseUrl()}/sick-reports/${id}/archive`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reason, deleted_by: deletedBy || null })
+    });
+    if (!response.ok) throw new Error('Failed to archive sick report');
+    return mapSickReport(await response.json() as BackendSickReport);
+  },
+  archiveMovement: async ({ id, reason, deletedBy }: { id: string; reason: string; deletedBy?: string }): Promise<MovementRequest> => {
+    const response = await fetch(`${apiBaseUrl()}/movements/${id}/archive`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reason, deleted_by: deletedBy || null })
+    });
+    if (!response.ok) throw new Error('Failed to archive movement');
     return mapMovement(await response.json() as BackendMovement);
   }
 };

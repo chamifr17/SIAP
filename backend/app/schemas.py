@@ -68,6 +68,10 @@ class MovementOut(MovementCreate):
     approved_by: UUID | None = None
     approval_time: datetime | None = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
+    is_archived: bool = False
+    delete_reason: str | None = None
+    deleted_at: datetime | None = None
+    deleted_by: str | None = None
 
 
 class SickLocationType(str, Enum):
@@ -107,6 +111,15 @@ class SickReportOut(SickReportCreate):
     check_in_time: datetime = Field(default_factory=datetime.utcnow)
     check_out_time: datetime | None = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
+    is_archived: bool = False
+    delete_reason: str | None = None
+    deleted_at: datetime | None = None
+    deleted_by: str | None = None
+
+
+class ArchiveRequest(BaseModel):
+    reason: str = Field(min_length=5)
+    deleted_by: str | None = None
 
 
 class AnnouncementCreate(BaseModel):

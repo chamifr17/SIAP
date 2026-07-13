@@ -34,6 +34,10 @@ create table if not exists movement_requests (
   duty_started_at timestamptz,
   duty_ended_at timestamptz,
   approval_time timestamptz,
+  is_archived boolean not null default false,
+  delete_reason text,
+  deleted_at timestamptz,
+  deleted_by text,
   created_at timestamptz not null default now()
 );
 
@@ -59,6 +63,10 @@ create table if not exists sick_reports (
   duty_ended_at timestamptz,
   check_in_time timestamptz not null default now(),
   check_out_time timestamptz,
+  is_archived boolean not null default false,
+  delete_reason text,
+  deleted_at timestamptz,
+  deleted_by text,
   created_at timestamptz not null default now()
 );
 

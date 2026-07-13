@@ -45,6 +45,10 @@ export type MovementRequest = {
   dutyStartedAt?: string;
   dutyEndedAt?: string;
   createdAt: string;
+  isArchived?: boolean;
+  deleteReason?: string;
+  deletedAt?: string;
+  deletedBy?: string;
 };
 
 export type SickReport = {
@@ -69,6 +73,10 @@ export type SickReport = {
   dutyStartedAt?: string;
   dutyEndedAt?: string;
   createdAt: string;
+  isArchived?: boolean;
+  deleteReason?: string;
+  deletedAt?: string;
+  deletedBy?: string;
 };
 
 export type Announcement = {

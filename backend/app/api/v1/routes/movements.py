@@ -4,7 +4,7 @@ from uuid import UUID, uuid4
 from fastapi import APIRouter
 
 from app.core.database import get_supabase
-from app.schemas import MovementCreate, MovementOut, MovementStatus
+from app.schemas import ArchiveRequest, MovementCreate, MovementOut, MovementStatus
 
 router = APIRouter()
 
@@ -16,8 +16,17 @@ def list_movements() -> list[MovementOut]:
     supabase = get_supabase()
     if supabase:
         response = supabase.table("movement_requests").select("*").order("created_at", desc=True).execute()
-        return [MovementOut(**item) for item in response.data]
-    return _movements
+        return [MovementOut(**item) for item in response.data if not item.get("is_archived")]
+    return [movement for movement in _movements if not movement.is_archived]
+
+
+@router.get("/archived", response_model=list[MovementOut])
+def list_archived_movements() -> list[MovementOut]:
+    supabase = get_supabase()
+    if supabase:
+        response = supabase.table("movement_requests").select("*").order("deleted_at", desc=True).execute()
+        return [MovementOut(**item) for item in response.data if item.get("is_archived")]
+    return [movement for movement in _movements if movement.is_archived]
 
 
 @router.post("", response_model=MovementOut, status_code=201)
@@ -81,4 +90,51 @@ def mark_returned(movement_id: UUID) -> MovementOut:
         checkout_time=now,
         return_time=now,
         status=MovementStatus.returned,
+    )
+
+
+@router.post("/{movement_id}/archive", response_model=MovementOut)
+def archive_movement(movement_id: UUID, payload: ArchiveRequest) -> MovementOut:
+    now = datetime.utcnow()
+    archive_fields = {
+        "is_archived": True,
+        "delete_reason": payload.reason,
+        "deleted_at": now.isoformat(),
+        "deleted_by": payload.deleted_by,
+    }
+    supabase = get_supabase()
+    if supabase:
+        response = (
+            supabase.table("movement_requests")
+            .update(archive_fields)
+            .eq("id", str(movement_id))
+            .execute()
+        )
+        if response.data:
+            return MovementOut(**response.data[0])
+
+    for index, movement in enumerate(_movements):
+        if movement.id == movement_id:
+            updated = movement.model_copy(update={**archive_fields, "deleted_at": now})
+            _movements[index] = updated
+            return updated
+
+    return MovementOut(
+        id=movement_id,
+        user_id=None,
+        body_number="UNKNOWN",
+        rank="CDT",
+        name="Unknown Cadet",
+        phone="-",
+        vehicle="-",
+        destination="Unknown",
+        purpose="Record was not found.",
+        expected_return=now,
+        checkout_time=now,
+        return_time=now,
+        status=MovementStatus.returned,
+        is_archived=True,
+        delete_reason=payload.reason,
+        deleted_at=now,
+        deleted_by=payload.deleted_by,
     )
