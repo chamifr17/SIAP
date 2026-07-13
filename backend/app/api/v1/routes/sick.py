@@ -22,7 +22,7 @@ def list_sick_reports() -> list[SickReportOut]:
 
 @router.post("", response_model=SickReportOut, status_code=201)
 def create_sick_report(payload: SickReportCreate) -> SickReportOut:
-    report = SickReportOut(id=uuid4(), user_id=uuid4(), **payload.model_dump())
+    report = SickReportOut(id=uuid4(), user_id=None, **payload.model_dump())
     supabase = get_supabase()
     if supabase:
         response = supabase.table("sick_reports").insert(report.model_dump(mode="json")).execute()
@@ -51,7 +51,7 @@ def mark_recovered(report_id: UUID) -> SickReportOut:
             return updated
     return SickReportOut(
         id=report_id,
-        user_id=uuid4(),
+        user_id=None,
         body_number="UNKNOWN",
         rank="CDT",
         name="Unknown Cadet",

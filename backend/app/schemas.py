@@ -56,7 +56,7 @@ class MovementCreate(BaseModel):
 
 class MovementOut(MovementCreate):
     id: UUID = Field(default_factory=uuid4)
-    user_id: UUID
+    user_id: UUID | None = None
     checkout_time: datetime | None = Field(default_factory=datetime.utcnow)
     return_time: datetime | None = None
     status: MovementStatus = MovementStatus.approved
@@ -91,7 +91,7 @@ class SickReportCreate(BaseModel):
 
 class SickReportOut(SickReportCreate):
     id: UUID = Field(default_factory=uuid4)
-    user_id: UUID
+    user_id: UUID | None = None
     status: SickStatus = SickStatus.active
     officer_remarks: str | None = None
     check_in_time: datetime = Field(default_factory=datetime.utcnow)

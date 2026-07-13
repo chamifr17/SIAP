@@ -22,7 +22,7 @@ def list_movements() -> list[MovementOut]:
 
 @router.post("", response_model=MovementOut, status_code=201)
 def create_movement(payload: MovementCreate) -> MovementOut:
-    movement = MovementOut(id=uuid4(), user_id=uuid4(), **payload.model_dump())
+    movement = MovementOut(id=uuid4(), user_id=None, **payload.model_dump())
     supabase = get_supabase()
     if supabase:
         response = supabase.table("movement_requests").insert(movement.model_dump(mode="json")).execute()
@@ -36,7 +36,7 @@ def approve_movement(movement_id: UUID) -> MovementOut:
     now = datetime.utcnow()
     return MovementOut(
         id=movement_id,
-        user_id=uuid4(),
+        user_id=None,
         destination="Demo destination",
         purpose="Demo purpose",
         expected_return=now,
@@ -69,7 +69,7 @@ def mark_returned(movement_id: UUID) -> MovementOut:
 
     return MovementOut(
         id=movement_id,
-        user_id=uuid4(),
+        user_id=None,
         body_number="UNKNOWN",
         rank="CDT",
         name="Unknown Cadet",
