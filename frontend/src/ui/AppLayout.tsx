@@ -53,12 +53,12 @@ export function AppLayout({ role }: Props) {
             </button>
           </div>
         </header>
-        <main className="flex-1 px-4 py-4 pb-32">
+        <main className="flex-1 px-4 py-4 pb-28">
           <Outlet />
         </main>
-        <nav className="fixed bottom-0 left-1/2 z-30 grid w-full max-w-md -translate-x-1/2 grid-cols-5 gap-1 border-t border-olive-800 bg-olive-900 px-2 pb-[calc(env(safe-area-inset-bottom)+10px)] pt-3 text-white shadow-soft">
+        <nav className="fixed bottom-0 left-1/2 z-30 grid w-full max-w-md -translate-x-1/2 grid-cols-5 gap-1 rounded-t-2xl border-t border-olive-800 bg-olive-900 px-2 pb-[calc(env(safe-area-inset-bottom)+8px)] pt-2 text-white shadow-soft">
           {nav.map((item) => (
-            <NavLink key={item.to} to={item.to} end className={({ isActive }) => `grid min-h-16 place-items-center rounded-lg text-xs font-semibold ${isActive ? 'bg-white/15 text-white' : 'text-white/65'}`}>
+            <NavLink key={item.to} to={item.to} end className={({ isActive }) => `grid min-h-14 place-items-center rounded-lg text-xs font-semibold ${isActive ? 'bg-white/15 text-white' : 'text-white/65'}`}>
               <item.icon size={21} />
               <span className="mt-1">{item.label}</span>
             </NavLink>
