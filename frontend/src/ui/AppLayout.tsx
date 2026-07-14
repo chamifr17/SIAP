@@ -41,7 +41,7 @@ export function AppLayout({ role }: Props) {
         <header className="fixed left-1/2 top-0 z-30 w-full max-w-md -translate-x-1/2 border-b border-olive-100 bg-olive-50/95 px-4 py-3 backdrop-blur dark:border-slate-800 dark:bg-slate-950/95">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <img className="size-14 rounded-lg bg-olive-900 object-contain p-1" src={siapLogo} alt="SIAP logo" />
+              <img className="size-14 object-contain" src={siapLogo} alt="SIAP logo" />
               <div>
                 <p className="text-[11px] font-semibold uppercase text-olive-700 dark:text-olive-100">Sistem Informasi Aktiviti PALAPES</p>
                 <h1 className="text-lg font-bold">Duty Officer</h1>
