@@ -24,7 +24,7 @@ export function dutyDetailsFromSearch(search: string): DutyOfficerNoticeProps {
 
 export function DutyOfficerNotice({ name, id, startedAt, endedAt }: DutyOfficerNoticeProps) {
   return (
-    <section className="rounded-lg border border-olive-100 bg-olive-50 p-3 text-sm text-slate-700 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+    <section className="rounded-xl border border-olive-100 bg-olive-50 p-4 text-sm text-slate-700 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
       <p className="text-xs font-bold uppercase text-olive-700 dark:text-olive-100">Current Duty Officer</p>
       <p className="mt-1 font-semibold">{name || '-'}</p>
       <div className="mt-2 grid grid-cols-1 gap-1 text-xs text-slate-500 dark:text-slate-300">

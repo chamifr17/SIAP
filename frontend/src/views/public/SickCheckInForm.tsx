@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { api } from '../../lib/api';
 import { isQRTokenValid, readQRToken, secondsRemaining } from '../../lib/qrToken';
 import { DutyOfficerNotice } from './DutyOfficerNotice';
+import { FieldShell, FormHero, FormSection } from './FormParts';
 
 const schema = z.object({
   bodyNumber: z.string().min(2, 'No. badan is required'),
@@ -55,25 +56,28 @@ export function SickCheckInForm() {
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit((data) => submitReport.mutate({ ...data, ...dutyPayload, qrToken: qrState?.token }))}>
-      <section className="card space-y-2"><h2 className="text-xl font-bold">Lapor DO Sakit</h2><p className="text-sm text-slate-500">Fill in your personal and sick report details.</p><p className="text-xs font-semibold text-olive-700 dark:text-olive-100">QR valid for {secondsRemaining(qrState!.expiresAt)} seconds</p></section>
+      <FormHero title="Lapor DO Sakit" description="Fill in your personal and sick report details." remaining={secondsRemaining(qrState!.expiresAt)} />
       <DutyOfficerNotice
         name={dutyPayload.dutyOfficerName}
         id={dutyPayload.dutyOfficerId}
         startedAt={dutyPayload.dutyStartedAt}
         endedAt={dutyPayload.dutyEndedAt}
       />
-      <label className="block space-y-2"><span className="label">No. Badan</span><input className="field" {...register('bodyNumber')} />{errors.bodyNumber && <p className="text-sm text-red-600">{errors.bodyNumber.message}</p>}</label>
-      <div className="grid grid-cols-2 gap-3">
-        <label className="block space-y-2"><span className="label">Pangkat</span><input className="field" {...register('rank')} />{errors.rank && <p className="text-sm text-red-600">{errors.rank.message}</p>}</label>
-        <label className="block space-y-2"><span className="label">Phone</span><input className="field" inputMode="tel" {...register('phone')} />{errors.phone && <p className="text-sm text-red-600">{errors.phone.message}</p>}</label>
-      </div>
-      <label className="block space-y-2"><span className="label">Nama</span><input className="field" {...register('name')} />{errors.name && <p className="text-sm text-red-600">{errors.name.message}</p>}</label>
-      <label className="block space-y-2"><span className="label">Peringkat</span><select className="field" {...register('peringkat')}><option value="">Select</option><option>Peringkat 1</option><option>Peringkat 2</option><option>Peringkat 3</option><option>Peringkat 4</option></select>{errors.peringkat && <p className="text-sm text-red-600">{errors.peringkat.message}</p>}</label>
-      <label className="block space-y-2"><span className="label">Symptoms</span><select className="field" {...register('symptoms')}><option value="">Select</option><option>Fever</option><option>Headache</option><option>Stomach Pain</option><option>Injury</option><option>Others</option></select>{errors.symptoms && <p className="text-sm text-red-600">{errors.symptoms.message}</p>}</label>
-      <label className="block space-y-2"><span className="label">Description</span><textarea className="field min-h-24" {...register('description')} />{errors.description && <p className="text-sm text-red-600">{errors.description.message}</p>}</label>
-      <label className="block space-y-2"><span className="label">Rest Location</span><select className="field" {...register('locationType')}><option>Duty Officer Room</option><option>Own Room</option></select></label>
-      {ownRoom && <div className="grid grid-cols-2 gap-3"><label className="block space-y-2"><span className="label">Building</span><input className="field" {...register('building')} /></label><label className="block space-y-2"><span className="label">Room</span><input className="field" {...register('room')} /></label></div>}
-      {errors.room && <p className="text-sm text-red-600">{errors.room.message}</p>}
+      <FormSection title="Cadet Details" description="Use your official ROTU/PALAPES details.">
+        <FieldShell label="No. Badan" error={errors.bodyNumber?.message}><input className="field" placeholder="Example: 7546001" {...register('bodyNumber')} /></FieldShell>
+        <div className="grid grid-cols-2 gap-3">
+          <FieldShell label="Pangkat" error={errors.rank?.message}><input className="field" placeholder="CDT" {...register('rank')} /></FieldShell>
+          <FieldShell label="Phone" error={errors.phone?.message}><input className="field" inputMode="tel" placeholder="01X-XXXXXXX" {...register('phone')} /></FieldShell>
+        </div>
+        <FieldShell label="Nama" error={errors.name?.message}><input className="field" placeholder="Full name" {...register('name')} /></FieldShell>
+        <FieldShell label="Peringkat" error={errors.peringkat?.message}><select className="field" {...register('peringkat')}><option value="">Select peringkat</option><option>Peringkat 1</option><option>Peringkat 2</option><option>Peringkat 3</option><option>Peringkat 4</option></select></FieldShell>
+      </FormSection>
+      <FormSection title="Sick Details" description="Tell the Duty Officer your condition and rest location.">
+        <FieldShell label="Symptoms" error={errors.symptoms?.message}><select className="field" {...register('symptoms')}><option value="">Select symptoms</option><option>Fever</option><option>Headache</option><option>Stomach Pain</option><option>Injury</option><option>Others</option></select></FieldShell>
+        <FieldShell label="Description" error={errors.description?.message}><textarea className="field min-h-28 resize-none" placeholder="Briefly describe your condition" {...register('description')} /></FieldShell>
+        <FieldShell label="Rest Location"><select className="field" {...register('locationType')}><option>Duty Officer Room</option><option>Own Room</option></select></FieldShell>
+        {ownRoom && <div className="grid grid-cols-2 gap-3"><FieldShell label="Building"><input className="field" {...register('building')} /></FieldShell><FieldShell label="Room" error={errors.room?.message}><input className="field" {...register('room')} /></FieldShell></div>}
+      </FormSection>
       {submitReport.isError && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">Unable to submit. Make sure the backend server is running on the DO laptop.</p>}
       <button className="btn-danger w-full" disabled={submitReport.isPending}>{submitReport.isPending ? 'Submitting...' : 'Check In Sick Report'}</button>
     </form>
