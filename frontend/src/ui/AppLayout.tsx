@@ -1,6 +1,7 @@
-import { History, Home, QrCode, Shield, UserRound, UsersRound } from 'lucide-react';
+import { History, Home, QrCode, UserRound, UsersRound } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import siapLogo from '../assets/siap-logo.png';
 import { dutyOfficers, getDutySession, setDutyOfficer } from '../lib/dutySession';
 import type { Role } from '../types';
 
@@ -40,9 +41,7 @@ export function AppLayout({ role }: Props) {
         <header className="fixed left-1/2 top-0 z-30 w-full max-w-md -translate-x-1/2 border-b border-olive-100 bg-olive-50/95 px-4 py-3 backdrop-blur dark:border-slate-800 dark:bg-slate-950/95">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="grid size-11 place-items-center rounded-lg bg-olive-700 text-white">
-                <Shield size={22} />
-              </div>
+              <img className="size-11 rounded-lg bg-olive-900 object-contain p-1.5" src={siapLogo} alt="SIAP logo" />
               <div>
                 <p className="text-[11px] font-semibold uppercase text-olive-700 dark:text-olive-100">Sistem Informasi Aktiviti PALAPES</p>
                 <h1 className="text-lg font-bold">Duty Officer</h1>

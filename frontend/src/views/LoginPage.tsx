@@ -1,7 +1,7 @@
-import { ShieldCheck } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import siapLogo from '../assets/siap-logo.png';
 import { api } from '../lib/api';
 import { createDutySession, getDutySession } from '../lib/dutySession';
 
@@ -37,9 +37,7 @@ export function LoginPage() {
       <section className="w-full max-w-md">
         <div className="space-y-4 rounded-xl border border-olive-200 bg-white p-5 shadow-[0_18px_45px_rgba(31,40,24,0.18)] dark:border-slate-700 dark:bg-slate-900">
           <div className="flex flex-col items-center text-center">
-            <div className="grid size-14 place-items-center rounded-lg bg-olive-700 text-white">
-              <ShieldCheck size={28} />
-            </div>
+            <img className="size-20 rounded-xl bg-olive-900 object-contain p-2" src={siapLogo} alt="SIAP logo" />
             <h1 className="mt-3 text-3xl font-bold">SIAP</h1>
             <p className="mt-1 text-sm font-semibold uppercase text-olive-700">Sistem Informasi Aktiviti PALAPES</p>
           </div>
