@@ -13,7 +13,7 @@ const schema = z.object({
   bodyNumber: z.string().min(2, 'No. badan is required'),
   rank: z.string().min(2, 'Pangkat is required'),
   name: z.string().min(2, 'Name is required'),
-  peringkat: z.string().min(1, 'Peringkat is required'),
+  peringkat: z.string().min(1, 'Cadet level is required'),
   vehicle: z.string().min(2, 'Vehicle details are required'),
   destination: z.string().min(2, 'Destination is required'),
   purpose: z.string().min(2, 'Purpose is required'),
@@ -61,7 +61,7 @@ export function OutsideCheckInForm() {
           <FieldShell label="Phone" error={errors.phone?.message}><input className="field" inputMode="tel" placeholder="01X-XXXXXXX" {...register('phone')} /></FieldShell>
         </div>
         <FieldShell label="Nama" error={errors.name?.message}><input className="field" placeholder="Full name" {...register('name')} /></FieldShell>
-        <FieldShell label="Peringkat" error={errors.peringkat?.message}><select className="field" {...register('peringkat')}><option value="">Select peringkat</option><option>Junior</option><option>Intermediate</option><option>Senior</option></select></FieldShell>
+        <FieldShell label="Cadet Level" error={errors.peringkat?.message}><select className="field" {...register('peringkat')}><option value="">Select cadet level</option><option>Junior</option><option>Intermediate</option><option>Senior</option></select></FieldShell>
       </FormSection>
       <FormSection title="Movement Details" description="State where you are going and when you expect to return.">
         <FieldShell label="Kenderaan" error={errors.vehicle?.message}><input className="field" placeholder="Car / Motorcycle / Walking" {...register('vehicle')} /></FieldShell>

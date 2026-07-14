@@ -83,8 +83,14 @@ export function HistoryPage() {
   return (
     <div className="space-y-4">
       {successMessage && (
-        <div className="fixed left-1/2 top-20 z-50 w-[min(360px,calc(100%-32px))] -translate-x-1/2 rounded-lg bg-emerald-600 px-4 py-3 text-center text-sm font-bold text-white shadow-soft">
-          {successMessage}
+        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/35 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-xs rounded-xl bg-white p-5 text-center shadow-xl dark:bg-slate-900">
+            <div className="mx-auto grid size-12 place-items-center rounded-full bg-emerald-100 text-emerald-700">
+              <CheckCircle2 size={24} />
+            </div>
+            <h3 className="mt-3 text-lg font-bold">Deleted</h3>
+            <p className="mt-1 text-sm text-slate-500">{successMessage}</p>
+          </div>
         </div>
       )}
       <section className="card space-y-3">
