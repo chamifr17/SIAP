@@ -6,17 +6,18 @@ export default {
     extend: {
       colors: {
         olive: {
-          50: '#f3f5f0',
-          100: '#e3e8dc',
-          200: '#cbd5bd',
-          500: '#70804d',
-          700: '#4a5b35',
-          900: '#24311f'
+          50: '#f0f3ea',
+          100: '#dfe6d2',
+          200: '#c1cea9',
+          500: '#60713f',
+          700: '#3f4d2d',
+          800: '#2f3b22',
+          900: '#1f2818'
         },
-        field: '#f8faf6'
+        field: '#f7f9f2'
       },
       boxShadow: {
-        soft: '0 10px 30px rgba(36,49,31,0.10)'
+        soft: '0 10px 30px rgba(31,40,24,0.14)'
       }
     }
   },
