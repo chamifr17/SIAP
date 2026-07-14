@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import loginCamo from '../assets/login-camo.png';
 import siapLogo from '../assets/siap-logo.png';
 import { api } from '../lib/api';
 import { createDutySession, getDutySession } from '../lib/dutySession';
@@ -33,9 +34,10 @@ export function LoginPage() {
   };
 
   return (
-    <div className="app-page grid place-items-center px-4">
-      <section className="w-full max-w-md">
-        <div className="space-y-4 rounded-xl border border-olive-200 bg-white p-5 shadow-[0_18px_45px_rgba(31,40,24,0.18)] dark:border-slate-700 dark:bg-slate-900">
+    <div className="grid h-dvh place-items-center overflow-hidden bg-cover bg-center px-4" style={{ backgroundImage: `url(${loginCamo})` }}>
+      <div className="absolute inset-0 bg-olive-950/45 backdrop-blur-[1px]" />
+      <section className="relative z-10 w-full max-w-md">
+        <div className="space-y-4 rounded-xl border border-white/70 bg-white/95 p-5 shadow-[0_18px_45px_rgba(15,23,42,0.32)] backdrop-blur dark:border-slate-700 dark:bg-slate-900/95">
           <div className="flex flex-col items-center text-center">
             <img className="size-28 object-contain" src={siapLogo} alt="SIAP logo" />
             <p className="mt-3 text-sm font-semibold uppercase text-olive-700">Sistem Informasi Aktiviti PALAPES</p>

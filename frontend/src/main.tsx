@@ -5,6 +5,8 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './router';
 import './index.css';
 
+document.documentElement.classList.toggle('dark', localStorage.getItem('siap_theme') === 'dark');
+
 let lastTouchEnd = 0;
 
 document.addEventListener('gesturestart', (event) => event.preventDefault());

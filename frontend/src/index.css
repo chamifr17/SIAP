@@ -51,6 +51,30 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(24%) sepia(15%) saturate(1048%) hue-rotate(42deg) brightness(92%) contrast(88%);
 }
 
+select.field {
+  min-height: 3rem;
+  appearance: none;
+  padding-right: 2.75rem;
+  font-weight: 600;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #3f4d2d 50%),
+    linear-gradient(135deg, #3f4d2d 50%, transparent 50%),
+    linear-gradient(to right, rgba(63, 77, 45, 0.16), rgba(63, 77, 45, 0.16));
+  background-position:
+    calc(100% - 20px) 50%,
+    calc(100% - 14px) 50%,
+    calc(100% - 2.5rem) 50%;
+  background-size: 6px 6px, 6px 6px, 1px 1.75rem;
+  background-repeat: no-repeat;
+}
+
+.dark select.field {
+  background-image:
+    linear-gradient(45deg, transparent 50%, #dfe6d2 50%),
+    linear-gradient(135deg, #dfe6d2 50%, transparent 50%),
+    linear-gradient(to right, rgba(223, 230, 210, 0.18), rgba(223, 230, 210, 0.18));
+}
+
 @layer components {
   .app-page {
     @apply h-dvh overflow-hidden bg-olive-50 text-olive-900 dark:bg-slate-950 dark:text-slate-100;

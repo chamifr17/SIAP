@@ -1,4 +1,4 @@
-import { History, Home, QrCode, UserRound, UsersRound } from 'lucide-react';
+import { History, Home, Moon, QrCode, Sun, UserRound, UsersRound } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import siapLogo from '../assets/siap-logo.png';
@@ -11,6 +11,7 @@ export function AppLayout({ role }: Props) {
   const navigate = useNavigate();
   const [session, setSession] = useState(getDutySession);
   const [selectedOfficer, setSelectedOfficer] = useState('');
+  const [isDark, setIsDark] = useState(() => localStorage.getItem('siap_theme') === 'dark');
   const officerNav = [
     { to: '/officer', icon: Home, label: 'Home' },
     { to: '/officer/outside', icon: UsersRound, label: 'Cadets' },
@@ -29,6 +30,11 @@ export function AppLayout({ role }: Props) {
     setSession(active);
   }, [navigate]);
 
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDark);
+    localStorage.setItem('siap_theme', isDark ? 'dark' : 'light');
+  }, [isDark]);
+
   const saveOfficer = () => {
     if (!selectedOfficer) return;
     setDutyOfficer(selectedOfficer);
@@ -39,7 +45,7 @@ export function AppLayout({ role }: Props) {
     <div className="app-page">
       <div className="mx-auto h-dvh w-full max-w-md overflow-hidden bg-olive-50 dark:bg-slate-950">
         <header className="fixed left-1/2 top-0 z-30 w-full max-w-md -translate-x-1/2 border-b border-olive-100 bg-olive-50/95 px-4 py-3 backdrop-blur dark:border-slate-800 dark:bg-slate-950/95">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <img className="size-14 object-contain" src={siapLogo} alt="SIAP logo" />
               <div>
@@ -47,9 +53,12 @@ export function AppLayout({ role }: Props) {
                 <h1 className="text-lg font-bold">Duty Officer</h1>
               </div>
             </div>
+            <button className="btn-secondary size-10 shrink-0 p-0" onClick={() => setIsDark((value) => !value)} aria-label="Toggle dark mode" type="button">
+              {isDark ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
           </div>
         </header>
-        <main className="fixed bottom-[84px] left-1/2 top-[69px] w-full max-w-md -translate-x-1/2 overflow-y-auto px-4 py-3">
+        <main className="fixed bottom-[84px] left-1/2 top-[82px] w-full max-w-md -translate-x-1/2 overflow-y-auto px-4 py-3">
           <Outlet />
         </main>
         <nav className="fixed bottom-0 left-1/2 z-30 grid w-full max-w-md -translate-x-1/2 grid-cols-5 gap-1 rounded-t-2xl border-t border-olive-800 bg-olive-900 px-2 pb-[calc(env(safe-area-inset-bottom)+8px)] pt-2 text-white shadow-soft">
@@ -71,7 +80,7 @@ export function AppLayout({ role }: Props) {
               <label className="mt-5 block space-y-2">
                 <span className="label">Duty Officer</span>
                 <select
-                  className="field min-h-14 appearance-none bg-[linear-gradient(45deg,transparent_50%,#4a5b35_50%),linear-gradient(135deg,#4a5b35_50%,transparent_50%)] bg-[length:6px_6px,6px_6px] bg-[position:calc(100%-20px)_50%,calc(100%-14px)_50%] bg-no-repeat pr-10 font-semibold"
+                  className="field font-semibold"
                   value={selectedOfficer}
                   onChange={(event) => setSelectedOfficer(event.target.value)}
                 >
