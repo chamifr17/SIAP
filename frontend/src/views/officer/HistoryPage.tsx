@@ -1,12 +1,10 @@
-import { Archive, Car, CheckCircle2, HeartPulse, X } from 'lucide-react';
+import { Car, CheckCircle2, HeartPulse, Trash2 } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api';
-import { getDutySession } from '../../lib/dutySession';
 import { EmptyState } from '../../ui/EmptyState';
 
 type Tab = 'sick' | 'movement';
-type ArchiveTarget = { type: Tab; id: string; label: string } | null;
 const SWIPE_ACTION_WIDTH = 96;
 
 type SwipeHistoryCardProps = {
@@ -44,7 +42,7 @@ function SwipeHistoryCard({ children, onArchive }: SwipeHistoryCardProps) {
         onClick={onArchive}
         type="button"
       >
-        <Archive size={20} />
+        <Trash2 size={20} />
         Delete
       </button>
       <article
@@ -66,8 +64,6 @@ function SwipeHistoryCard({ children, onArchive }: SwipeHistoryCardProps) {
 
 export function HistoryPage() {
   const [tab, setTab] = useState<Tab>('sick');
-  const [archiveTarget, setArchiveTarget] = useState<ArchiveTarget>(null);
-  const [reason, setReason] = useState('');
   const movements = useQuery({ queryKey: ['movements'], queryFn: api.movements });
   const sick = useQuery({ queryKey: ['sickReports'], queryFn: api.sickReports });
   const returned = (movements.data ?? []).filter((item) => item.status === 'returned');
@@ -76,61 +72,11 @@ export function HistoryPage() {
     void movements.refetch();
     void sick.refetch();
   };
-  const archiveMovement = useMutation({ mutationFn: api.archiveMovement, onSuccess: refresh });
-  const archiveSick = useMutation({ mutationFn: api.archiveSickReport, onSuccess: refresh });
-  const isArchiving = archiveMovement.isPending || archiveSick.isPending;
-  const canArchive = reason.trim().length >= 5 && archiveTarget;
-
-  const openArchive = (target: ArchiveTarget) => {
-    setArchiveTarget(target);
-    setReason('');
-  };
-
-  const closeArchive = () => {
-    setArchiveTarget(null);
-    setReason('');
-  };
-
-  const submitArchive = () => {
-    if (!archiveTarget || reason.trim().length < 5) return;
-    const payload = { id: archiveTarget.id, reason: reason.trim(), deletedBy: getDutySession()?.officerName };
-    const options = { onSuccess: closeArchive };
-    if (archiveTarget.type === 'sick') {
-      archiveSick.mutate(payload, options);
-    } else {
-      archiveMovement.mutate(payload, options);
-    }
-  };
+  const deleteMovement = useMutation({ mutationFn: api.deleteMovement, onSuccess: refresh });
+  const deleteSick = useMutation({ mutationFn: api.deleteSickReport, onSuccess: refresh });
 
   return (
     <div className="space-y-4">
-      {archiveTarget && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/50 p-4">
-          <section className="w-full max-w-md rounded-lg bg-white p-4 shadow-xl dark:bg-slate-900">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <h3 className="text-lg font-bold">Archive History</h3>
-                <p className="text-sm text-slate-500">{archiveTarget.label}</p>
-              </div>
-              <button className="rounded-lg p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" onClick={closeArchive} type="button">
-                <X size={18} />
-              </button>
-            </div>
-            <label className="mt-4 block space-y-2">
-              <span className="label">Reason for deletion</span>
-              <textarea className="field min-h-28" value={reason} onChange={(event) => setReason(event.target.value)} placeholder="Example: Duplicate record entered by mistake" />
-            </label>
-            <p className="mt-2 text-xs text-slate-500">This record will move to Archive in More. It will not be permanently deleted.</p>
-            {(archiveMovement.isError || archiveSick.isError) && <p className="mt-3 rounded-lg bg-red-50 p-3 text-sm text-red-700">Unable to archive this record. Please try again.</p>}
-            <div className="mt-4 grid grid-cols-2 gap-3">
-              <button className="btn-secondary w-full" onClick={closeArchive} type="button">Cancel</button>
-              <button className="btn-danger w-full" disabled={!canArchive || isArchiving} onClick={submitArchive} type="button">
-                {isArchiving ? 'Archiving...' : 'Archive'}
-              </button>
-            </div>
-          </section>
-        </div>
-      )}
       <section className="card space-y-3">
         <h2 className="text-xl font-bold">History</h2>
         <p className="text-sm text-slate-500">Completed checkout records.</p>
@@ -150,7 +96,7 @@ export function HistoryPage() {
           {recovered.map((item) => (
             <SwipeHistoryCard
               key={item.id}
-              onArchive={() => openArchive({ type: 'sick', id: item.id, label: `${item.bodyNumber ?? '-'} - ${item.rank ?? '-'} ${item.cadetName}` })}
+              onArchive={() => deleteSick.mutate(item.id)}
             >
               <div className="flex items-center justify-between gap-3">
                 <div>
@@ -175,7 +121,7 @@ export function HistoryPage() {
           {returned.map((item) => (
             <SwipeHistoryCard
               key={item.id}
-              onArchive={() => openArchive({ type: 'movement', id: item.id, label: `${item.bodyNumber ?? '-'} - ${item.rank} ${item.cadetName}` })}
+              onArchive={() => deleteMovement.mutate(item.id)}
             >
               <div className="flex items-center justify-between gap-3">
                 <div>

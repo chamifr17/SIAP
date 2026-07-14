@@ -186,18 +186,6 @@ export const api = {
     const data = await response.json() as BackendSickReport[];
     return data.map(mapSickReport);
   },
-  archivedMovements: async (): Promise<MovementRequest[]> => {
-    const response = await fetch(`${apiBaseUrl()}/movements/archived`);
-    if (!response.ok) throw new Error('Failed to load archived movements');
-    const data = await response.json() as BackendMovement[];
-    return data.map(mapMovement);
-  },
-  archivedSickReports: async (): Promise<SickReport[]> => {
-    const response = await fetch(`${apiBaseUrl()}/sick-reports/archived`);
-    if (!response.ok) throw new Error('Failed to load archived sick reports');
-    const data = await response.json() as BackendSickReport[];
-    return data.map(mapSickReport);
-  },
   announcements: async (): Promise<Announcement[]> => {
     const response = await fetch(`${apiBaseUrl()}/announcements`);
     if (!response.ok) throw new Error('Failed to load announcements');
@@ -273,22 +261,12 @@ export const api = {
     if (!response.ok) throw new Error('Failed to mark returned');
     return mapMovement(await response.json() as BackendMovement);
   },
-  archiveSickReport: async ({ id, reason, deletedBy }: { id: string; reason: string; deletedBy?: string }): Promise<SickReport> => {
-    const response = await fetch(`${apiBaseUrl()}/sick-reports/${id}/archive`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ reason, deleted_by: deletedBy || null })
-    });
-    if (!response.ok) throw new Error('Failed to archive sick report');
-    return mapSickReport(await response.json() as BackendSickReport);
+  deleteSickReport: async (id: string): Promise<void> => {
+    const response = await fetch(`${apiBaseUrl()}/sick-reports/${id}`, { method: 'DELETE' });
+    if (!response.ok) throw new Error('Failed to delete sick report');
   },
-  archiveMovement: async ({ id, reason, deletedBy }: { id: string; reason: string; deletedBy?: string }): Promise<MovementRequest> => {
-    const response = await fetch(`${apiBaseUrl()}/movements/${id}/archive`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ reason, deleted_by: deletedBy || null })
-    });
-    if (!response.ok) throw new Error('Failed to archive movement');
-    return mapMovement(await response.json() as BackendMovement);
+  deleteMovement: async (id: string): Promise<void> => {
+    const response = await fetch(`${apiBaseUrl()}/movements/${id}`, { method: 'DELETE' });
+    if (!response.ok) throw new Error('Failed to delete movement');
   }
 };
