@@ -44,7 +44,7 @@ export function AppLayout({ role }: Props) {
                 <Shield size={22} />
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase text-olive-700 dark:text-olive-100">Sistem Informasi Aplikasi Pelaporan</p>
+                <p className="text-[11px] font-semibold uppercase text-olive-700 dark:text-olive-100">Smart Integrated Activity Platform</p>
                 <h1 className="text-lg font-bold">Duty Officer</h1>
               </div>
             </div>

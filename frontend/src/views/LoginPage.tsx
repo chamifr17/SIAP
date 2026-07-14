@@ -40,7 +40,7 @@ export function LoginPage() {
             <ShieldCheck size={28} />
           </div>
           <div>
-            <p className="text-sm font-semibold uppercase text-olive-700">Duty Officer System</p>
+            <p className="text-sm font-semibold uppercase text-olive-700">Smart Integrated Activity Platform</p>
             <h1 className="text-3xl font-bold">SIAP</h1>
           </div>
         </div>
