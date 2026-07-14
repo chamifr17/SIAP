@@ -33,10 +33,10 @@ export function LoginPage() {
   };
 
   return (
-    <div className="fixed inset-0 grid h-[100dvh] place-items-center overflow-hidden bg-cover bg-center px-4" style={{ backgroundImage: "url('/login-camo.jpg')" }}>
-      <div className="absolute inset-0 bg-[#11190d]/30 backdrop-blur-[0.5px]" />
+    <div className="fixed inset-0 grid h-[100dvh] place-items-center overflow-hidden bg-[#11190d] px-4">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#31452b_0%,#17220f_42%,#090f07_100%)]" />
       <section className="relative z-10 w-full max-w-md">
-        <div className="space-y-3 rounded-xl border border-[#d4c783]/25 bg-[#17220f]/90 p-4 text-[#f4efd7] shadow-[0_22px_55px_rgba(9,14,6,0.55)] backdrop-blur-md sm:p-5">
+        <div className="space-y-3 rounded-xl border border-[#d4c783]/25 bg-[#17220f]/95 p-4 text-[#f4efd7] shadow-[0_22px_55px_rgba(9,14,6,0.55)] sm:p-5">
           <div className="flex flex-col items-center text-center">
             <img className="size-24 object-contain sm:size-28" src={siapLogo} alt="SIAP logo" />
             <p className="mt-2 text-sm font-semibold uppercase text-[#efe6b5]">Sistem Informasi Aktiviti PALAPES</p>
