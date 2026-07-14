@@ -1,4 +1,4 @@
-import { Bell, History, Home, MoreHorizontal, QrCode, Shield, UsersRound } from 'lucide-react';
+import { History, Home, QrCode, Shield, UserRound, UsersRound } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { dutyOfficers, getDutySession, setDutyOfficer } from '../lib/dutySession';
@@ -15,7 +15,7 @@ export function AppLayout({ role }: Props) {
     { to: '/officer/outside', icon: UsersRound, label: 'Cadets' },
     { to: '/officer/qr', icon: QrCode, label: 'QR' },
     { to: '/officer/history', icon: History, label: 'History' },
-    { to: '/officer/more', icon: MoreHorizontal, label: 'More' }
+    { to: '/officer/more', icon: UserRound, label: 'Profile' }
   ];
   const nav = officerNav;
 
@@ -36,8 +36,8 @@ export function AppLayout({ role }: Props) {
 
   return (
     <div className="app-page">
-      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-olive-50 dark:bg-slate-950">
-        <header className="sticky top-0 z-20 border-b border-olive-100 bg-olive-50/95 px-4 py-3 backdrop-blur dark:border-slate-800 dark:bg-slate-950/95">
+      <div className="mx-auto flex h-screen w-full max-w-md flex-col overflow-hidden bg-olive-50 dark:bg-slate-950">
+        <header className="z-20 shrink-0 border-b border-olive-100 bg-olive-50/95 px-4 py-3 backdrop-blur dark:border-slate-800 dark:bg-slate-950/95">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="grid size-11 place-items-center rounded-lg bg-olive-700 text-white">
@@ -48,12 +48,9 @@ export function AppLayout({ role }: Props) {
                 <h1 className="text-lg font-bold">Duty Officer</h1>
               </div>
             </div>
-            <button className="btn-secondary size-11 p-0" aria-label="Notifications">
-              <Bell size={19} />
-            </button>
           </div>
         </header>
-        <main className="flex-1 px-4 py-4 pb-28">
+        <main className="flex-1 overflow-y-auto px-4 py-4 pb-28">
           <Outlet />
         </main>
         <nav className="fixed bottom-0 left-1/2 z-30 grid w-full max-w-md -translate-x-1/2 grid-cols-5 gap-1 rounded-t-2xl border-t border-olive-800 bg-olive-900 px-2 pb-[calc(env(safe-area-inset-bottom)+8px)] pt-2 text-white shadow-soft">
