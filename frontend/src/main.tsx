@@ -5,6 +5,21 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './router';
 import './index.css';
 
+let lastTouchEnd = 0;
+
+document.addEventListener('gesturestart', (event) => event.preventDefault());
+document.addEventListener('gesturechange', (event) => event.preventDefault());
+document.addEventListener('gestureend', (event) => event.preventDefault());
+document.addEventListener('touchmove', (event) => {
+  if (event.touches.length > 1) event.preventDefault();
+}, { passive: false });
+document.addEventListener('touchend', (event) => {
+  const now = Date.now();
+  if (now - lastTouchEnd <= 300) event.preventDefault();
+  lastTouchEnd = now;
+}, { passive: false });
+document.addEventListener('dblclick', (event) => event.preventDefault());
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -21,4 +36,3 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </QueryClientProvider>
   </React.StrictMode>
 );
-

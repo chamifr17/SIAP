@@ -25,7 +25,11 @@ def create_movement(payload: MovementCreate) -> MovementOut:
     movement = MovementOut(id=uuid4(), user_id=None, **payload.model_dump())
     supabase = get_supabase()
     if supabase:
-        response = supabase.table("movement_requests").insert(movement.model_dump(mode="json")).execute()
+        insert_data = movement.model_dump(
+            mode="json",
+            exclude={"is_archived", "delete_reason", "deleted_at", "deleted_by"},
+        )
+        response = supabase.table("movement_requests").insert(insert_data).execute()
         return MovementOut(**response.data[0])
     _movements.insert(0, movement)
     return movement

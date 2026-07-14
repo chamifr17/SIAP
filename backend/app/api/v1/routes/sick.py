@@ -25,7 +25,11 @@ def create_sick_report(payload: SickReportCreate) -> SickReportOut:
     report = SickReportOut(id=uuid4(), user_id=None, **payload.model_dump())
     supabase = get_supabase()
     if supabase:
-        response = supabase.table("sick_reports").insert(report.model_dump(mode="json")).execute()
+        insert_data = report.model_dump(
+            mode="json",
+            exclude={"is_archived", "delete_reason", "deleted_at", "deleted_by"},
+        )
+        response = supabase.table("sick_reports").insert(insert_data).execute()
         return SickReportOut(**response.data[0])
     _sick_reports.insert(0, report)
     return report
