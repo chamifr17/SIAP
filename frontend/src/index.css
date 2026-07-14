@@ -5,7 +5,9 @@
 :root {
   color-scheme: light;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #e9eee4;
+  height: 100%;
+  overflow: hidden;
+  background: #020617;
   touch-action: pan-x pan-y;
 }
 
@@ -14,17 +16,25 @@
 }
 
 body {
+  position: fixed;
+  inset: 0;
   margin: 0;
+  width: 100%;
+  height: 100%;
   min-width: 320px;
-  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #020617;
   overscroll-behavior: none;
   touch-action: pan-x pan-y;
   -webkit-text-size-adjust: 100%;
 }
 
 #root {
+  width: 100%;
   height: 100dvh;
   overflow: hidden;
+  background: #020617;
   touch-action: pan-x pan-y;
 }
 
@@ -77,7 +87,7 @@ select.field {
 
 @layer components {
   .app-page {
-    @apply h-dvh overflow-hidden bg-olive-50 text-olive-900 dark:bg-slate-950 dark:text-slate-100;
+    @apply fixed inset-0 h-dvh overflow-hidden bg-olive-50 text-olive-900 dark:bg-slate-950 dark:text-slate-100;
   }
 
   .card {

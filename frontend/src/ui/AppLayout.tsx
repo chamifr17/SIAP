@@ -61,7 +61,7 @@ export function AppLayout({ role }: Props) {
             </button>
           </div>
         </header>
-        <main className={`fixed bottom-[84px] left-1/2 top-[82px] w-full max-w-md -translate-x-1/2 overflow-x-hidden px-4 py-3 ${isFixedPage ? 'overflow-y-hidden' : 'overflow-y-auto'}`}>
+        <main className={`fixed bottom-0 left-1/2 top-[82px] w-full max-w-md -translate-x-1/2 overflow-x-hidden bg-olive-50 px-4 pb-[calc(env(safe-area-inset-bottom)+104px)] pt-3 dark:bg-slate-950 ${isFixedPage ? 'overflow-y-hidden' : 'overflow-y-auto'}`}>
           <Outlet />
         </main>
         <nav className="fixed bottom-0 left-1/2 z-30 grid w-full max-w-md -translate-x-1/2 grid-cols-5 gap-1 rounded-t-2xl border-t border-olive-800 bg-olive-900 px-2 pb-[calc(env(safe-area-inset-bottom)+8px)] pt-2 text-white shadow-soft">
