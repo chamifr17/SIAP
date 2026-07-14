@@ -34,13 +34,13 @@ export function LoginPage() {
   };
 
   return (
-    <div className="grid h-dvh place-items-center overflow-hidden bg-cover bg-center px-4" style={{ backgroundImage: `url(${loginCamo})` }}>
+    <div className="fixed inset-0 grid h-[100dvh] place-items-center overflow-hidden bg-cover bg-center px-4" style={{ backgroundImage: `url(${loginCamo})` }}>
       <div className="absolute inset-0 bg-[#11190d]/30 backdrop-blur-[0.5px]" />
       <section className="relative z-10 w-full max-w-md">
-        <div className="space-y-4 rounded-xl border border-[#d4c783]/25 bg-[#17220f]/90 p-5 text-[#f4efd7] shadow-[0_22px_55px_rgba(9,14,6,0.55)] backdrop-blur-md">
+        <div className="space-y-3 rounded-xl border border-[#d4c783]/25 bg-[#17220f]/90 p-4 text-[#f4efd7] shadow-[0_22px_55px_rgba(9,14,6,0.55)] backdrop-blur-md sm:p-5">
           <div className="flex flex-col items-center text-center">
-            <img className="size-28 object-contain" src={siapLogo} alt="SIAP logo" />
-            <p className="mt-3 text-sm font-semibold uppercase text-[#efe6b5]">Sistem Informasi Aktiviti PALAPES</p>
+            <img className="size-24 object-contain sm:size-28" src={siapLogo} alt="SIAP logo" />
+            <p className="mt-2 text-sm font-semibold uppercase text-[#efe6b5]">Sistem Informasi Aktiviti PALAPES</p>
           </div>
           <label className="block space-y-2">
             <span className="text-sm font-semibold text-[#f4efd7]">Username</span>
