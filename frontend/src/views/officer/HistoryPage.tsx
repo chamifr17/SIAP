@@ -64,6 +64,7 @@ function SwipeHistoryCard({ children, onArchive }: SwipeHistoryCardProps) {
 
 export function HistoryPage() {
   const [tab, setTab] = useState<Tab>('sick');
+  const [successMessage, setSuccessMessage] = useState('');
   const movements = useQuery({ queryKey: ['movements'], queryFn: api.movements });
   const sick = useQuery({ queryKey: ['sickReports'], queryFn: api.sickReports });
   const returned = (movements.data ?? []).filter((item) => item.status === 'returned');
@@ -72,11 +73,20 @@ export function HistoryPage() {
     void movements.refetch();
     void sick.refetch();
   };
-  const deleteMovement = useMutation({ mutationFn: api.deleteMovement, onSuccess: refresh });
-  const deleteSick = useMutation({ mutationFn: api.deleteSickReport, onSuccess: refresh });
+  const showDeleted = () => {
+    setSuccessMessage('Successfully deleted history');
+    window.setTimeout(() => setSuccessMessage(''), 2500);
+  };
+  const deleteMovement = useMutation({ mutationFn: api.deleteMovement, onSuccess: () => { refresh(); showDeleted(); } });
+  const deleteSick = useMutation({ mutationFn: api.deleteSickReport, onSuccess: () => { refresh(); showDeleted(); } });
 
   return (
     <div className="space-y-4">
+      {successMessage && (
+        <div className="fixed left-1/2 top-20 z-50 w-[min(360px,calc(100%-32px))] -translate-x-1/2 rounded-lg bg-emerald-600 px-4 py-3 text-center text-sm font-bold text-white shadow-soft">
+          {successMessage}
+        </div>
+      )}
       <section className="card space-y-3">
         <h2 className="text-xl font-bold">History</h2>
         <p className="text-sm text-slate-500">Completed checkout records.</p>

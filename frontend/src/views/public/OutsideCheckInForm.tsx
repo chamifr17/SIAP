@@ -62,7 +62,7 @@ export function OutsideCheckInForm() {
           <FieldShell label="Phone" error={errors.phone?.message}><input className="field" inputMode="tel" placeholder="01X-XXXXXXX" {...register('phone')} /></FieldShell>
         </div>
         <FieldShell label="Nama" error={errors.name?.message}><input className="field" placeholder="Full name" {...register('name')} /></FieldShell>
-        <FieldShell label="Peringkat" error={errors.peringkat?.message}><select className="field" {...register('peringkat')}><option value="">Select peringkat</option><option>Peringkat 1</option><option>Peringkat 2</option><option>Peringkat 3</option><option>Peringkat 4</option></select></FieldShell>
+        <FieldShell label="Peringkat" error={errors.peringkat?.message}><select className="field" {...register('peringkat')}><option value="">Select peringkat</option><option>Junior</option><option>Intermediate</option><option>Senior</option></select></FieldShell>
       </FormSection>
       <FormSection title="Movement Details" description="State where you are going and when you expect to return.">
         <FieldShell label="Kenderaan" error={errors.vehicle?.message}><input className="field" placeholder="Car / Motorcycle / Walking" {...register('vehicle')} /></FieldShell>
