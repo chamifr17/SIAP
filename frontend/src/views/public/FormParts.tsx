@@ -15,8 +15,8 @@ type FieldShellProps = {
 export function FormHero({ title, description, remaining }: { title: string; description: string; remaining: number }) {
   return (
     <section className="rounded-xl border border-olive-100 bg-white p-4 shadow-soft dark:border-slate-800 dark:bg-slate-900">
-      <div className="flex items-start justify-between gap-3">
-        <div>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
           <p className="text-xs font-bold uppercase text-olive-700 dark:text-olive-100">SIAP Cadet Form</p>
           <h2 className="mt-1 text-2xl font-bold leading-tight">{title}</h2>
           <p className="mt-1 text-sm text-slate-500">{description}</p>

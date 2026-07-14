@@ -47,7 +47,7 @@ export function OutsideCheckInForm() {
   }
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit((data) => submitMovement.mutate({ ...data, ...dutyPayload, qrToken: qrState?.token }))}>
+    <form className="space-y-4 pb-4" onSubmit={handleSubmit((data) => submitMovement.mutate({ ...data, ...dutyPayload, qrToken: qrState?.token }))}>
       <FormHero title="Go Outside Form" description="Fill in your personal and movement details before leaving." remaining={secondsRemaining(qrState!.expiresAt)} />
       <DutyOfficerNotice
         name={dutyPayload.dutyOfficerName}

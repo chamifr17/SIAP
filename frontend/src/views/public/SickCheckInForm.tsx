@@ -55,7 +55,7 @@ export function SickCheckInForm() {
   }
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit((data) => submitReport.mutate({ ...data, ...dutyPayload, qrToken: qrState?.token }))}>
+    <form className="space-y-4 pb-4" onSubmit={handleSubmit((data) => submitReport.mutate({ ...data, ...dutyPayload, qrToken: qrState?.token }))}>
       <FormHero title="Lapor DO Sakit" description="Fill in your personal and sick report details." remaining={secondsRemaining(qrState!.expiresAt)} />
       <DutyOfficerNotice
         name={dutyPayload.dutyOfficerName}
