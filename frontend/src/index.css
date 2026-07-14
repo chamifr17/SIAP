@@ -41,6 +41,16 @@ select {
   font: inherit;
 }
 
+input[type="date"] {
+  color-scheme: light;
+  accent-color: #3f4d2d;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(24%) sepia(15%) saturate(1048%) hue-rotate(42deg) brightness(92%) contrast(88%);
+}
+
 @layer components {
   .app-page {
     @apply h-dvh overflow-hidden bg-olive-50 text-olive-900 dark:bg-slate-950 dark:text-slate-100;

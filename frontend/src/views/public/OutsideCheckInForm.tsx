@@ -17,7 +17,6 @@ const schema = z.object({
   vehicle: z.string().min(2, 'Vehicle details are required'),
   destination: z.string().min(2, 'Destination is required'),
   purpose: z.string().min(2, 'Purpose is required'),
-  expectedReturn: z.string().min(4, 'Expected return time is required'),
   phone: z.string().min(6, 'Phone number is required'),
   remarks: z.string().optional()
 });
@@ -68,7 +67,6 @@ export function OutsideCheckInForm() {
         <FieldShell label="Kenderaan" error={errors.vehicle?.message}><input className="field" placeholder="Car / Motorcycle / Walking" {...register('vehicle')} /></FieldShell>
         <FieldShell label="Destination" error={errors.destination?.message}><input className="field" placeholder="Destination" {...register('destination')} /></FieldShell>
         <FieldShell label="Purpose" error={errors.purpose?.message}><input className="field" placeholder="Purpose" {...register('purpose')} /></FieldShell>
-        <FieldShell label="Expected Return" error={errors.expectedReturn?.message}><input className="field" type="time" {...register('expectedReturn')} /></FieldShell>
         <FieldShell label="Remarks"><textarea className="field min-h-28 resize-none" placeholder="Optional remarks" {...register('remarks')} /></FieldShell>
       </FormSection>
       {submitMovement.isError && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">Unable to submit. Please inform the Duty Officer.</p>}

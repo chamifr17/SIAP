@@ -130,6 +130,7 @@ export function HistoryPage() {
                   </div>
                   <div className="grid gap-1 text-sm text-slate-600 dark:text-slate-300">
                     <p><span className="font-semibold">From:</span> {item.locationType}{item.room ? `, ${item.building}-${item.room}` : ''}</p>
+                    <p><span className="font-semibold">Check in:</span> {item.checkInTime ? new Date(item.checkInTime).toLocaleString() : '-'}</p>
                     <p><span className="font-semibold">Check out:</span> {item.checkOutTime ? new Date(item.checkOutTime).toLocaleString() : '-'}</p>
                     <p><span className="font-semibold">DO:</span> {item.dutyOfficerName ?? '-'}</p>
                   </div>
@@ -159,6 +160,7 @@ export function HistoryPage() {
                   </div>
                   <div className="grid gap-1 text-sm text-slate-600 dark:text-slate-300">
                     <p><span className="font-semibold">From:</span> {item.destination}</p>
+                    <p><span className="font-semibold">Check in:</span> {item.checkoutTime ? new Date(item.checkoutTime).toLocaleString() : '-'}</p>
                     <p><span className="font-semibold">Check out:</span> {item.returnTime ? new Date(item.returnTime).toLocaleString() : '-'}</p>
                     <p><span className="font-semibold">DO:</span> {item.dutyOfficerName ?? '-'}</p>
                   </div>

@@ -163,7 +163,6 @@ export type PublicMovementPayload = {
   vehicle: string;
   destination: string;
   purpose: string;
-  expectedReturn: string;
   remarks?: string;
   qrToken?: string;
   dutyOfficerName?: string;
@@ -224,9 +223,7 @@ export const api = {
     return mapSickReport(await response.json() as BackendSickReport);
   },
   createPublicMovement: async (payload: PublicMovementPayload): Promise<MovementRequest> => {
-    const today = new Date();
-    const [hours, minutes] = payload.expectedReturn.split(':').map(Number);
-    today.setHours(hours, minutes, 0, 0);
+    const fallbackReturn = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     const response = await fetch(`${apiBaseUrl()}/movements`, {
       method: 'POST',
@@ -240,7 +237,7 @@ export const api = {
         vehicle: payload.vehicle,
         destination: payload.destination,
         purpose: payload.purpose,
-        expected_return: today.toISOString(),
+        expected_return: fallbackReturn.toISOString(),
         remarks: payload.remarks || null,
         qr_token: payload.qrToken || null,
         duty_officer_name: payload.dutyOfficerName || null,

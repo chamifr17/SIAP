@@ -38,8 +38,7 @@ export function LoginPage() {
         <div className="space-y-4 rounded-xl border border-olive-200 bg-white p-5 shadow-[0_18px_45px_rgba(31,40,24,0.18)] dark:border-slate-700 dark:bg-slate-900">
           <div className="flex flex-col items-center text-center">
             <img className="size-28 object-contain" src={siapLogo} alt="SIAP logo" />
-            <h1 className="mt-3 text-3xl font-bold">SIAP</h1>
-            <p className="mt-1 text-sm font-semibold uppercase text-olive-700">Sistem Informasi Aktiviti PALAPES</p>
+            <p className="mt-3 text-sm font-semibold uppercase text-olive-700">Sistem Informasi Aktiviti PALAPES</p>
           </div>
           <div className="rounded-lg bg-olive-100 p-3 text-center text-sm font-bold text-olive-900 dark:bg-slate-800 dark:text-slate-100">Duty Officer Access Only</div>
           <label className="block space-y-2">

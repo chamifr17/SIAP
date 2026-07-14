@@ -50,7 +50,7 @@ class MovementCreate(BaseModel):
     vehicle: str
     destination: str = Field(min_length=2)
     purpose: str = Field(min_length=2)
-    expected_return: datetime
+    expected_return: datetime | None = None
     remarks: str | None = None
     qr_token: str | None = None
     duty_officer_name: str | None = None
@@ -72,6 +72,10 @@ class MovementOut(MovementCreate):
     delete_reason: str | None = None
     deleted_at: datetime | None = None
     deleted_by: str | None = None
+
+    def model_post_init(self, __context) -> None:
+        if self.expected_return is None:
+            self.expected_return = self.checkout_time or self.created_at
 
 
 class SickLocationType(str, Enum):
