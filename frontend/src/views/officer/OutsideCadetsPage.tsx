@@ -96,15 +96,15 @@ export function OutsideCadetsPage() {
               <p className="px-1 text-xs font-bold uppercase text-slate-500">{date}</p>
               {items.map((item) => (
                 <article className="card space-y-3 overflow-visible" key={item.id}>
-                  <div className="flex justify-between gap-3">
-                    <div>
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="min-w-0 flex-1">
                       <h3 className="break-words font-semibold">{item.rank} {item.cadetName}</h3>
                       <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate-500">
                         <span>{item.bodyNumber ?? 'No body number'}</span>
                         <span className={`rounded-full border px-2 py-0.5 text-xs font-bold ${peringkatBadgeClass(item.peringkat)}`}>{item.peringkat ?? '-'}</span>
                       </div>
                     </div>
-                    <span className="shrink-0 rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800">{item.status}</span>
+                    <span className="inline-flex w-fit shrink-0 self-start rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-bold capitalize leading-tight text-blue-800">{item.status}</span>
                   </div>
                   <div className="grid gap-1 rounded-lg bg-olive-50 p-3 text-sm dark:bg-slate-800">
                     <p><span className="font-semibold">Destination:</span> {item.destination}</p>
