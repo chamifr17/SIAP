@@ -1,7 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import loginCamo from '../assets/login-camo.png';
 import siapLogo from '../assets/siap-logo.png';
 import { api } from '../lib/api';
 import { createDutySession, getDutySession } from '../lib/dutySession';
@@ -34,7 +33,7 @@ export function LoginPage() {
   };
 
   return (
-    <div className="fixed inset-0 grid h-[100dvh] place-items-center overflow-hidden bg-cover bg-center px-4" style={{ backgroundImage: `url(${loginCamo})` }}>
+    <div className="fixed inset-0 grid h-[100dvh] place-items-center overflow-hidden bg-cover bg-center px-4" style={{ backgroundImage: "url('/login-camo.jpg')" }}>
       <div className="absolute inset-0 bg-[#11190d]/30 backdrop-blur-[0.5px]" />
       <section className="relative z-10 w-full max-w-md">
         <div className="space-y-3 rounded-xl border border-[#d4c783]/25 bg-[#17220f]/90 p-4 text-[#f4efd7] shadow-[0_22px_55px_rgba(9,14,6,0.55)] backdrop-blur-md sm:p-5">
