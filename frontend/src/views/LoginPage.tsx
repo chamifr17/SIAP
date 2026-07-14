@@ -33,26 +33,26 @@ export function LoginPage() {
   };
 
   return (
-    <div className="fixed inset-0 grid h-[100dvh] place-items-center overflow-hidden bg-[#11190d] px-4">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#31452b_0%,#17220f_42%,#090f07_100%)]" />
+    <div className="fixed inset-0 grid h-[100dvh] w-screen touch-none place-items-center overflow-hidden bg-[#344225] px-4">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#4b5d33_0%,#344225_45%,#1d2615_100%)]" />
       <section className="relative z-10 w-full max-w-md">
-        <div className="space-y-3 rounded-xl border border-[#d4c783]/25 bg-[#17220f]/95 p-4 text-[#f4efd7] shadow-[0_22px_55px_rgba(9,14,6,0.55)] sm:p-5">
+        <div className="space-y-3 rounded-xl border border-[#d6e3bf] bg-[#dfeacb]/95 p-4 text-[#1d2615] shadow-[0_22px_55px_rgba(9,14,6,0.42)] sm:p-5">
           <div className="flex flex-col items-center text-center">
             <img className="size-24 object-contain sm:size-28" src={siapLogo} alt="SIAP logo" />
-            <p className="mt-2 text-sm font-semibold uppercase text-[#efe6b5]">Sistem Informasi Aktiviti PALAPES</p>
+            <p className="mt-2 text-sm font-semibold uppercase text-[#344225]">Sistem Informasi Aktiviti PALAPES</p>
           </div>
           <label className="block space-y-2">
-            <span className="text-sm font-semibold text-[#f4efd7]">Username</span>
+            <span className="text-sm font-semibold text-[#1d2615]">Username</span>
             <input
-              className="w-full rounded-lg border border-[#d4c783]/35 bg-[#0d1509]/75 px-3 py-3 text-sm text-[#f8f2d4] outline-none ring-[#c8b95f] transition placeholder:text-[#d7cb98]/55 focus:border-[#d4c783] focus:ring-2"
+              className="w-full rounded-lg border border-[#9cac73] bg-[#f7faef] px-3 py-3 text-sm text-[#1d2615] outline-none ring-[#5f743f] transition placeholder:text-[#6f7a5a]/60 focus:border-[#5f743f] focus:ring-2"
               value={username}
               onChange={(event) => setUsername(event.target.value)}
             />
           </label>
           <label className="block space-y-2">
-            <span className="text-sm font-semibold text-[#f4efd7]">Password</span>
+            <span className="text-sm font-semibold text-[#1d2615]">Password</span>
             <input
-              className="w-full rounded-lg border border-[#d4c783]/35 bg-[#0d1509]/75 px-3 py-3 text-sm text-[#f8f2d4] outline-none ring-[#c8b95f] transition placeholder:text-[#d7cb98]/55 focus:border-[#d4c783] focus:ring-2"
+              className="w-full rounded-lg border border-[#9cac73] bg-[#f7faef] px-3 py-3 text-sm text-[#1d2615] outline-none ring-[#5f743f] transition placeholder:text-[#6f7a5a]/60 focus:border-[#5f743f] focus:ring-2"
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
@@ -60,7 +60,7 @@ export function LoginPage() {
           </label>
           {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
           <button
-            className="flex w-full items-center justify-center rounded-lg bg-[#d4c783] px-4 py-3 text-sm font-bold text-[#18220f] shadow-sm transition hover:bg-[#e2d893] disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex w-full items-center justify-center rounded-lg bg-[#344225] px-4 py-3 text-sm font-bold text-[#f7faef] shadow-sm transition hover:bg-[#26311b] disabled:cursor-not-allowed disabled:opacity-60"
             disabled={login.isPending}
             onClick={submit}
           >

@@ -1,6 +1,6 @@
 import { History, Home, Moon, QrCode, Sun, UserRound, UsersRound } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import siapLogo from '../assets/siap-logo.png';
 import { dutyOfficers, getDutySession, setDutyOfficer } from '../lib/dutySession';
 import type { Role } from '../types';
@@ -9,9 +9,10 @@ type Props = { role: Role };
 
 export function AppLayout({ role }: Props) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [session, setSession] = useState(getDutySession);
   const [selectedOfficer, setSelectedOfficer] = useState('');
-  const [isDark, setIsDark] = useState(() => localStorage.getItem('siap_theme') === 'dark');
+  const [isDark, setIsDark] = useState(() => localStorage.getItem('siap_theme') !== 'light');
   const officerNav = [
     { to: '/officer', icon: Home, label: 'Home' },
     { to: '/officer/outside', icon: UsersRound, label: 'Cadets' },
@@ -20,6 +21,8 @@ export function AppLayout({ role }: Props) {
     { to: '/officer/more', icon: UserRound, label: 'Profile' }
   ];
   const nav = officerNav;
+  const fixedPages = new Set(['/officer', '/officer/qr', '/officer/more']);
+  const isFixedPage = fixedPages.has(location.pathname);
 
   useEffect(() => {
     const active = getDutySession();
@@ -58,7 +61,7 @@ export function AppLayout({ role }: Props) {
             </button>
           </div>
         </header>
-        <main className="fixed bottom-[84px] left-1/2 top-[82px] w-full max-w-md -translate-x-1/2 overflow-y-auto px-4 py-3">
+        <main className={`fixed bottom-[84px] left-1/2 top-[82px] w-full max-w-md -translate-x-1/2 overflow-x-hidden px-4 py-3 ${isFixedPage ? 'overflow-y-hidden' : 'overflow-y-auto'}`}>
           <Outlet />
         </main>
         <nav className="fixed bottom-0 left-1/2 z-30 grid w-full max-w-md -translate-x-1/2 grid-cols-5 gap-1 rounded-t-2xl border-t border-olive-800 bg-olive-900 px-2 pb-[calc(env(safe-area-inset-bottom)+8px)] pt-2 text-white shadow-soft">

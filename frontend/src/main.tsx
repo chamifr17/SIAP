@@ -5,7 +5,8 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './router';
 import './index.css';
 
-document.documentElement.classList.toggle('dark', localStorage.getItem('siap_theme') === 'dark');
+const savedTheme = localStorage.getItem('siap_theme');
+document.documentElement.classList.toggle('dark', savedTheme !== 'light');
 
 let lastTouchEnd = 0;
 
