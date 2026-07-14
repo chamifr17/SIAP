@@ -27,7 +27,7 @@ select {
 
 @layer components {
   .app-page {
-    @apply min-h-screen bg-olive-50 text-olive-900 dark:bg-slate-950 dark:text-slate-100;
+    @apply h-dvh overflow-hidden bg-olive-50 text-olive-900 dark:bg-slate-950 dark:text-slate-100;
   }
 
   .card {
@@ -58,4 +58,3 @@ select {
     @apply text-sm font-semibold text-olive-900 dark:text-slate-200;
   }
 }
-

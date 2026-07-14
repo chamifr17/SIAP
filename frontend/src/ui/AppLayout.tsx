@@ -36,8 +36,8 @@ export function AppLayout({ role }: Props) {
 
   return (
     <div className="app-page">
-      <div className="mx-auto flex h-screen w-full max-w-md flex-col overflow-hidden bg-olive-50 dark:bg-slate-950">
-        <header className="z-20 shrink-0 border-b border-olive-100 bg-olive-50/95 px-4 py-3 backdrop-blur dark:border-slate-800 dark:bg-slate-950/95">
+      <div className="mx-auto h-dvh w-full max-w-md overflow-hidden bg-olive-50 dark:bg-slate-950">
+        <header className="fixed left-1/2 top-0 z-30 w-full max-w-md -translate-x-1/2 border-b border-olive-100 bg-olive-50/95 px-4 py-3 backdrop-blur dark:border-slate-800 dark:bg-slate-950/95">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="grid size-11 place-items-center rounded-lg bg-olive-700 text-white">
@@ -50,7 +50,7 @@ export function AppLayout({ role }: Props) {
             </div>
           </div>
         </header>
-        <main className="flex-1 overflow-y-auto px-4 py-4 pb-28">
+        <main className="fixed bottom-[84px] left-1/2 top-[69px] w-full max-w-md -translate-x-1/2 overflow-y-auto px-4 py-3">
           <Outlet />
         </main>
         <nav className="fixed bottom-0 left-1/2 z-30 grid w-full max-w-md -translate-x-1/2 grid-cols-5 gap-1 rounded-t-2xl border-t border-olive-800 bg-olive-900 px-2 pb-[calc(env(safe-area-inset-bottom)+8px)] pt-2 text-white shadow-soft">
