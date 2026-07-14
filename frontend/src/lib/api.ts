@@ -3,6 +3,7 @@ import type { Announcement, MovementRequest, Role, SickReport, User } from '../t
 const apiBaseUrl = () => {
   const configured = import.meta.env.VITE_API_BASE_URL as string | undefined;
   if (configured) return configured;
+  if (import.meta.env.PROD) return 'https://siap-hwle.onrender.com/api/v1';
   const host = window.location.hostname;
   return `${window.location.protocol}//${host}:8000/api/v1`;
 };
