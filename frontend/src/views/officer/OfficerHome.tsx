@@ -1,4 +1,4 @@
-import { Activity, CheckCircle2, HeartPulse, Timer, UsersRound } from 'lucide-react';
+import { ArrowRight, HeartPulse, Timer } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -14,18 +14,6 @@ export function OfficerHome() {
   const sickItems = sick.data ?? [];
   const activeOutside = items.filter((x) => x.status === 'approved' || x.status === 'overdue').length;
   const activeSick = sickItems.filter((x) => x.status === 'active').length;
-  const completedMovements = items.filter((x) => x.status === 'returned').length;
-  const completedSick = sickItems.filter((x) => x.status === 'recovered' || x.status === 'clinic').length;
-  const dutyTotal = items.length + sickItems.length;
-  const activeTotal = activeOutside + activeSick;
-  const completedTotal = completedMovements + completedSick;
-  const recentTotal = [...items, ...sickItems].filter((item) => Date.now() - new Date(item.createdAt).getTime() <= 60 * 60 * 1000).length;
-  const analytics = [
-    { label: 'Total', value: dutyTotal, icon: Activity },
-    { label: 'Active', value: activeTotal, icon: UsersRound },
-    { label: 'Completed', value: completedTotal, icon: CheckCircle2 },
-    { label: 'Last Hour', value: recentTotal, icon: Timer }
-  ];
   const cards = [
     { label: 'Outside', value: activeOutside, icon: Timer, to: '/officer/outside' },
     { label: 'Sick', value: activeSick, icon: HeartPulse, to: '/officer/outside' }
@@ -51,23 +39,10 @@ export function OfficerHome() {
                 <strong>{dutyWindowLabel(session)}</strong>
               </div>
             </div>
-            <p className="text-center text-xs font-semibold text-slate-500">Tap card for analytics</p>
+            <ArrowRight className="absolute bottom-3 right-3 text-slate-400 dark:text-slate-500" size={18} />
           </div>
-          <div className="card absolute inset-0 space-y-3 p-3 [backface-visibility:hidden] [transform:rotateY(180deg)]">
-            <div>
-              <p className="text-xs font-bold uppercase text-olive-700 dark:text-olive-100">Duty analytics</p>
-              <h2 className="mt-1 text-lg font-bold">Current Session</h2>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              {analytics.map((item) => (
-                <div className="rounded-lg border border-olive-100 bg-olive-50 p-2.5 dark:border-slate-800 dark:bg-slate-800" key={item.label}>
-                  <item.icon className="text-olive-700 dark:text-olive-100" size={18} />
-                  <p className="mt-2 text-xs text-slate-500">{item.label}</p>
-                  <strong className="text-2xl">{item.value}</strong>
-                </div>
-              ))}
-            </div>
-            <p className="text-center text-xs font-semibold text-slate-500">Tap card to return</p>
+          <div className="card absolute inset-0 p-3 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+            <ArrowRight className="absolute bottom-3 right-3 rotate-180 text-slate-400 dark:text-slate-500" size={18} />
           </div>
         </section>
       </button>
