@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 export function PublicQRLayout() {
   return (
     <div className="app-page">
-      <div className="mx-auto min-h-screen w-full max-w-md bg-olive-50 px-4 py-5 dark:bg-slate-950">
+      <div className="mx-auto h-dvh w-full max-w-md overflow-y-auto bg-olive-50 px-4 py-5 pb-8 dark:bg-slate-950">
         <header className="mb-5 flex items-center gap-3 rounded-xl border border-olive-100 bg-white p-3 shadow-soft dark:border-slate-800 dark:bg-slate-900">
           <div className="grid size-11 place-items-center rounded-lg bg-olive-700 text-white">
             <Shield size={22} />
