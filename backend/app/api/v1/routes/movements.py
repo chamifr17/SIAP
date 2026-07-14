@@ -23,6 +23,9 @@ def list_movements() -> list[MovementOut]:
 @router.post("", response_model=MovementOut, status_code=201)
 def create_movement(payload: MovementCreate) -> MovementOut:
     movement = MovementOut(id=uuid4(), user_id=None, **payload.model_dump())
+    if payload.remarks and "__SPECIAL_CASE__" in payload.remarks:
+        now = datetime.utcnow()
+        movement = movement.model_copy(update={"status": MovementStatus.returned, "return_time": now})
     supabase = get_supabase()
     if supabase:
         insert_data = movement.model_dump(

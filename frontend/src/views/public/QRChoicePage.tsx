@@ -1,4 +1,4 @@
-import { HeartPulse, LogOut } from 'lucide-react';
+import { BriefcaseBusiness, HeartPulse, LogOut } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { isQRTokenValid, readQRToken, secondsRemaining, tokenSearch } from '../../lib/qrToken';
 import { DutyOfficerNotice, dutyDetailsFromSearch } from './DutyOfficerNotice';
@@ -40,6 +40,10 @@ export function QRChoicePage() {
       <Link to={`/qr/outside/check-in${search}`} className="btn-primary min-h-24 w-full justify-start text-base">
         <LogOut size={24} />
         <span>Going Out</span>
+      </Link>
+      <Link to={`/qr/special-case${search}`} className="btn-secondary min-h-24 w-full justify-start border border-orange-200 bg-orange-100 text-orange-900 hover:bg-orange-200 dark:border-orange-900/60 dark:bg-orange-950 dark:text-orange-100">
+        <BriefcaseBusiness size={24} />
+        <span>Special Case</span>
       </Link>
     </div>
   );

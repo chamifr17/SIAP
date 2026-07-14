@@ -7,6 +7,7 @@ import { EmptyState } from '../../ui/EmptyState';
 
 type Tab = 'sick' | 'movement';
 const SWIPE_ACTION_WIDTH = 96;
+const SPECIAL_CASE_TAG = '__SPECIAL_CASE__';
 
 type SwipeHistoryCardProps = {
   children: ReactNode;
@@ -75,6 +76,8 @@ export function HistoryPage() {
   const deleteSick = useMutation({ mutationFn: api.deleteSickReport, onSuccess: () => { refresh(); showDeleted(); } });
   const sickDate = (item: typeof recovered[number]) => item.checkOutTime ?? item.checkInTime ?? item.createdAt;
   const movementDate = (item: typeof returned[number]) => item.returnTime ?? item.checkoutTime ?? item.createdAt;
+  const isSpecialCase = (remarks?: string) => remarks?.includes(SPECIAL_CASE_TAG) ?? false;
+  const cleanRemarks = (remarks?: string) => remarks?.replace(SPECIAL_CASE_TAG, '').trim();
   const filteredSick = selectedDate ? recovered.filter((item) => dateInputValue(sickDate(item)) === selectedDate) : recovered;
   const filteredMovements = selectedDate ? returned.filter((item) => dateInputValue(movementDate(item)) === selectedDate) : returned;
   const sickGroups = groupByDate(filteredSick, sickDate);
@@ -157,9 +160,12 @@ export function HistoryPage() {
                 <SwipeHistoryCard key={item.id} onDelete={() => deleteMovement.mutate(item.id)}>
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <h3 className="break-words font-semibold">{item.bodyNumber ?? '-'} - {item.rank} {item.cadetName}</h3>
+                      <h3 className={`break-words font-semibold ${isSpecialCase(item.remarks) ? 'rounded-lg bg-orange-100 px-2 py-1 text-orange-900 dark:bg-orange-950 dark:text-orange-100' : ''}`}>
+                        {item.bodyNumber ?? '-'} - {item.rank} {item.cadetName}
+                      </h3>
                       <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate-500">
                         <span className={`rounded-full border px-2 py-0.5 text-xs font-bold ${peringkatBadgeClass(item.peringkat)}`}>{item.peringkat ?? '-'}</span>
+                        {isSpecialCase(item.remarks) && <span className="rounded-full bg-orange-100 px-2 py-0.5 text-xs font-bold text-orange-900 dark:bg-orange-950 dark:text-orange-100">Special Case</span>}
                       </div>
                     </div>
                     <CheckCircle2 className="shrink-0 text-emerald-600" size={20} />
@@ -168,6 +174,7 @@ export function HistoryPage() {
                     <p><span className="font-semibold">From:</span> {item.destination}</p>
                     <p><span className="font-semibold">Check in:</span> {item.checkoutTime ? new Date(item.checkoutTime).toLocaleString() : '-'}</p>
                     <p><span className="font-semibold">Check out:</span> {item.returnTime ? new Date(item.returnTime).toLocaleString() : '-'}</p>
+                    {cleanRemarks(item.remarks) && <p><span className="font-semibold">Remarks:</span> {cleanRemarks(item.remarks)}</p>}
                     <p><span className="font-semibold">DO:</span> {item.dutyOfficerName ?? '-'}</p>
                   </div>
                 </SwipeHistoryCard>

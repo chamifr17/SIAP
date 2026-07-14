@@ -16,6 +16,7 @@ import { QRChoicePage } from './views/public/QRChoicePage';
 import { SickCheckInForm } from './views/public/SickCheckInForm';
 import { SickCheckOutForm } from './views/public/SickCheckOutForm';
 import { OutsideCheckInForm } from './views/public/OutsideCheckInForm';
+import { SpecialCaseForm } from './views/public/SpecialCaseForm';
 
 export const router = createBrowserRouter([
   { path: '/', element: <Navigate to="/login" replace /> },
@@ -43,7 +44,8 @@ export const router = createBrowserRouter([
       { index: true, element: <QRChoicePage /> },
       { path: 'sick/check-in', element: <SickCheckInForm /> },
       { path: 'sick/check-out', element: <SickCheckOutForm /> },
-      { path: 'outside/check-in', element: <OutsideCheckInForm /> }
+      { path: 'outside/check-in', element: <OutsideCheckInForm /> },
+      { path: 'special-case', element: <SpecialCaseForm /> }
     ]
   }
 ]);
